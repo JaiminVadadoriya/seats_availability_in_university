@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "156771702932",
+    "project_id": "seat-availability-in-un",
+    "storage_bucket": "seat-availability-in-un.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:156771702932:android:8671405231fe685b4b3c81",
+        "android_client_info": {
+          "package_name": "com.example.seats_availability_in_university"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "156771702932-lq1l94sjvrehqimog8613r0cmscorih7.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB37o49L4psK1W6iAW_tIbOvQ0A9pdAIWU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "156771702932-lq1l94sjvrehqimog8613r0cmscorih7.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
