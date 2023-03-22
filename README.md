@@ -1,6 +1,6 @@
 # seats_availability_in_university
 
-A new Flutter project.
+A new Collage project.
 
 ## Getting Started
 

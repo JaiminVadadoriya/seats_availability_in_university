@@ -8,9 +8,9 @@ class Student {
   final Float english;
   final List<String> fav;
 
-  Student({
+  Student(
+    this.email, {
     required this.name,
-    required this.email,
     required this.maths,
     required this.science,
     required this.english,

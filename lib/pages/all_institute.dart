@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:seats_availability_in_university/pages/details_page.dart';
 
+import '../utils/routes.dart';
 import 'home.dart';
 
 class AllInstitute extends StatefulWidget {
@@ -29,6 +31,15 @@ class _AllInstituteState extends State<AllInstitute> {
             child: ListTile(
               title: Text("${institutes[index].name} "),
               subtitle: Text("${institutes[index].address} "),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => DetailsPage(
+                            institute: institutes[index],
+                          )),
+                );
+              },
               trailing: IconButton(
                 icon: Icon(
                   institutes[index].isFav

@@ -1,16 +1,18 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../utils/routes.dart';
+import 'loginpages/sign.dart';
 
 class StudentDetail extends StatelessWidget {
   StudentDetail({super.key});
   final _formKey = GlobalKey<FormState>();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController mark1Controller = TextEditingController();
-  TextEditingController mark2Controller = TextEditingController();
-  TextEditingController mark3Controller = TextEditingController();
+  static TextEditingController nameController = TextEditingController();
+  static TextEditingController mark1Controller = TextEditingController();
+  static TextEditingController mark2Controller = TextEditingController();
+  static TextEditingController mark3Controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -108,35 +110,24 @@ class StudentDetail extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              Row(
-                // ignore: sort_child_properties_last
-                children: <Widget>[
-                  const Text('Already have account?'),
-                  TextButton(
-                      child: const Text(
-                        'Log in',
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          MyRoutes.loginRoute,
-                          (route) => false,
-                        );
-                      })
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     //save data
+
+                    final db = FirebaseFirestore.instance;
+                    db.collection("students").add({
+                      "r_email": Signup.mailController.text,
+                      "r_password": Signup.passwordController.text,
+                      "name": nameController.text,
+                      "maths": int.parse(mark1Controller.text),
+                      "science": int.parse(mark2Controller.text),
+                      "english": int.parse(mark3Controller.text),
+                    });
                     //move to new page
                     Navigator.pushNamedAndRemoveUntil(
                       context,
-                      MyRoutes.signRoute,
+                      MyRoutes.loginRoute,
                       (route) => false,
                     );
                   }

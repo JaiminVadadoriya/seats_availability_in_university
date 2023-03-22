@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:seats_availability_in_university/pages/loginpages/sign.dart';
 
 import '../utils/routes.dart';
 
@@ -12,6 +14,7 @@ class InstituteDetail extends StatelessWidget {
   TextEditingController siteController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
   TextEditingController branchController = TextEditingController();
+  TextEditingController meritController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -140,6 +143,24 @@ class InstituteDetail extends StatelessWidget {
                 height: 20,
               ),
               TextFormField(
+                controller: meritController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "merit can't be empty";
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: "Eg - 700000",
+                  labelText: "Institute min Merit",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
                 controller: branchController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -157,35 +178,28 @@ class InstituteDetail extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              Row(
-                // ignore: sort_child_properties_last
-                children: <Widget>[
-                  const Text('Already have account?'),
-                  TextButton(
-                      child: const Text(
-                        'Log in',
-                        style: TextStyle(fontSize: 17),
-                      ),
-                      onPressed: () {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          MyRoutes.loginRoute,
-                          (route) => false,
-                        );
-                      })
-                ],
-              ),
-              SizedBox(
-                height: 20,
-              ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     //save data
+
+                    final db = FirebaseFirestore.instance;
+                    db.collection("institutes").add({
+                      "r_email": Signup.mailController.text,
+                      "r_password": Signup.passwordController.text,
+                      "name": nameController.text,
+                      "email": emailController.text,
+                      "ashiiCode": int.parse(ashiiController.text),
+                      "merit": int.parse(meritController.text),
+                      "address": addressController.text,
+                      "site": siteController.text,
+                      "phone": phoneController.text,
+                      "branch": branchController.text,
+                    });
                     //move to new page
                     Navigator.pushNamedAndRemoveUntil(
                       context,
-                      MyRoutes.signRoute,
+                      MyRoutes.loginRoute,
                       (route) => false,
                     );
                   }

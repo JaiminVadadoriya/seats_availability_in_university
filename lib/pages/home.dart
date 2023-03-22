@@ -28,6 +28,7 @@ List<Institute> institutes = [
     site: "www.gpgandhinagar.edu.in",
     isFav: false,
     branch: [],
+    minMarks: 70,
   ),
   Institute(
     name: "R.C. Technical Institute",
@@ -39,6 +40,7 @@ List<Institute> institutes = [
     site: "www.rcti.in",
     isFav: false,
     branch: [],
+    minMarks: 70,
   ),
   Institute(
     name: "R.C. Technical Institute",
@@ -50,6 +52,7 @@ List<Institute> institutes = [
     site: "www.rcti.in",
     isFav: false,
     branch: [],
+    minMarks: 70,
   ),
   Institute(
     name: "R.C. Technical Institute",
@@ -61,6 +64,7 @@ List<Institute> institutes = [
     site: "www.rcti.in",
     isFav: false,
     branch: [],
+    minMarks: 70,
   ),
 ];
 

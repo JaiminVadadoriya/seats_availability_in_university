@@ -1,12 +1,16 @@
 // import 'package:ai_app/models/user.dart';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 import '../../utils/routes.dart';
 import 'login.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
+  static TextEditingController mailController = TextEditingController();
+  static TextEditingController passwordController = TextEditingController();
   @override
   State<Signup> createState() => _SignupState();
 }
@@ -18,11 +22,8 @@ class _SignupState extends State<Signup> {
 
   // final FirebaseFirestore db = FirebaseFirestore.instance;
 
-  TextEditingController nameController = TextEditingController();
-  TextEditingController mailController = TextEditingController();
-
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController confpasswordController = TextEditingController();
+  // TextEditingController nameController = TextEditingController();
+  // TextEditingController confpasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +75,7 @@ class _SignupState extends State<Signup> {
                   height: 20,
                 ),
                 TextFormField(
-                  controller: mailController,
+                  controller: Signup.mailController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Email can't be empty";
@@ -94,7 +95,7 @@ class _SignupState extends State<Signup> {
                 ),
                 TextFormField(
                   obscureText: !_passwordVisible,
-                  controller: passwordController,
+                  controller: Signup.passwordController,
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return "Password can't be empty";
@@ -150,11 +151,12 @@ class _SignupState extends State<Signup> {
                           );
                           final credential = await FirebaseAuth.instance
                               .createUserWithEmailAndPassword(
-                            email: mailController.text,
-                            password: passwordController.text,
+                            email: Signup.mailController.text,
+                            password: Signup.passwordController.text,
                           );
                           Navigator.of(context).pop();
-                          Navigator.pushNamed(context, MyRoutes.loginRoute);
+
+                          Navigator.pushNamed(context, MyRoutes.registerRoute);
 
                           //pop the loading
                         } on FirebaseAuthException catch (e) {
@@ -195,6 +197,27 @@ class _SignupState extends State<Signup> {
                       }
                     },
                   ),
+                ),
+                Row(
+                  // ignore: sort_child_properties_last
+                  children: <Widget>[
+                    const Text('Already have account?'),
+                    TextButton(
+                        child: const Text(
+                          'Log in',
+                          style: TextStyle(fontSize: 17),
+                        ),
+                        onPressed: () {
+                          Navigator.pushNamedAndRemoveUntil(
+                            context,
+                            MyRoutes.loginRoute,
+                            (route) => false,
+                          );
+                        })
+                  ],
+                ),
+                SizedBox(
+                  height: 20,
                 ),
               ],
             ),

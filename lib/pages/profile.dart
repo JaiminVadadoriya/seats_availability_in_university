@@ -15,13 +15,13 @@ class Profile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CircleAvatar(
-                radius: 30,
+              const CircleAvatar(
+                radius: 40,
                 child: Padding(
                   padding: EdgeInsets.all(5),
                   child: Icon(
                     Icons.account_circle,
-                    size: 50,
+                    size: 30,
                   ),
                 ),
               ),

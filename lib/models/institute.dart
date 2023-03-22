@@ -2,6 +2,7 @@ class Institute {
   final String name;
   final String email;
   final int ashiiCode;
+  final int minMarks;
   final String address;
   bool isFav;
   final String site;
@@ -17,5 +18,6 @@ class Institute {
     required this.site,
     required this.phone,
     required this.branch,
+    required this.minMarks,
   });
 }

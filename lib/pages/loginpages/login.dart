@@ -154,6 +154,7 @@ class _LoginState extends State<Login> {
                           Navigator.pushNamedAndRemoveUntil(
                               context, MyRoutes.homeRoute, ((route) => false));
                         } on FirebaseAuthException catch (e) {
+                          Navigator.of(context).pop();
                           if (e.code == 'user-not-found') {
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(
@@ -198,7 +199,7 @@ class _LoginState extends State<Login> {
 
                         Navigator.pushNamedAndRemoveUntil(
                           context,
-                          MyRoutes.registerRoute,
+                          MyRoutes.signRoute,
                           (route) => false,
                         );
                       },
