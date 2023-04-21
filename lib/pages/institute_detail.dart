@@ -1,20 +1,26 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:seats_availability_in_university/models/institute.dart';
 import 'package:seats_availability_in_university/pages/loginpages/sign.dart';
+import 'package:seats_availability_in_university/widgets/select_branch.dart';
 
 import '../utils/routes.dart';
 
 class InstituteDetail extends StatelessWidget {
   InstituteDetail({super.key});
+
+  // String dropdownvalue = ;
+
   final _formKey = GlobalKey<FormState>();
+
   TextEditingController nameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController ashiiController = TextEditingController();
   TextEditingController addressController = TextEditingController();
   TextEditingController siteController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
-  TextEditingController branchController = TextEditingController();
-  TextEditingController meritController = TextEditingController();
+  // TextEditingController branchController = TextEditingController();
+  TextEditingController seatsController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -68,8 +74,8 @@ class InstituteDetail extends StatelessWidget {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Number can't be empty";
-                  } else if (int.parse(value) < 10000) {
-                    return "Number is not less than 10";
+                  } else if (value.length < 6) {
+                    return "Number is not less than 6";
                   }
                   return null;
                 },
@@ -87,9 +93,7 @@ class InstituteDetail extends StatelessWidget {
                 controller: addressController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "Number can't be empty";
-                  } else if (int.parse(value) < 10) {
-                    return "Number is not less than 10";
+                    return "Address can't be empty";
                   }
                   return null;
                 },
@@ -109,8 +113,10 @@ class InstituteDetail extends StatelessWidget {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Number can't be empty";
-                  } else if (int.parse(value) < 10000000000) {
+                  } else if (value.length < 10) {
                     return "Number is not less than 10";
+                  } else if (int.parse(value) < 0) {
+                    return 'Number is not in negeative';
                   }
                   return null;
                 },
@@ -143,16 +149,18 @@ class InstituteDetail extends StatelessWidget {
                 height: 20,
               ),
               TextFormField(
-                controller: meritController,
+                controller: seatsController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "merit can't be empty";
+                  } else if (int.parse(value) < 0) {
+                    return 'Seats is not in negeative';
                   }
                   return null;
                 },
                 decoration: InputDecoration(
-                  hintText: "Eg - 700000",
-                  labelText: "Institute min Merit",
+                  hintText: "Eg - 120",
+                  labelText: "Institute Branch Seats",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
@@ -160,21 +168,22 @@ class InstituteDetail extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
-              TextFormField(
-                controller: branchController,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Branch can't be empty";
-                  }
-                  return null;
-                },
-                decoration: InputDecoration(
-                  hintText: "Eg - EC, CH, CE",
-                  labelText: "Institute Branches",
-                  border: OutlineInputBorder(),
-                ),
-                keyboardType: TextInputType.text,
-              ),
+              SelectBranch(),
+              // TextFormField(
+              //   controller: branchController,
+              //   validator: (value) {
+              //     if (value == null || value.isEmpty) {
+              //       return "Branch can't be empty";
+              //     }
+              //     return null;
+              //   },
+              //   decoration: InputDecoration(
+              //     hintText: "Eg - EC, CH, CE",
+              //     labelText: "Institute Branches",
+              //     border: OutlineInputBorder(),
+              //   ),
+              //   keyboardType: TextInputType.text,
+              // ),
               SizedBox(
                 height: 20,
               ),
@@ -184,18 +193,25 @@ class InstituteDetail extends StatelessWidget {
                     //save data
 
                     final db = FirebaseFirestore.instance;
-                    db.collection("institutes").add({
-                      "r_email": Signup.mailController.text,
-                      "r_password": Signup.passwordController.text,
-                      "name": nameController.text,
-                      "email": emailController.text,
-                      "ashiiCode": int.parse(ashiiController.text),
-                      "merit": int.parse(meritController.text),
-                      "address": addressController.text,
-                      "site": siteController.text,
-                      "phone": phoneController.text,
-                      "branch": branchController.text,
-                    });
+                    BranchInstitute branchInstitute = BranchInstitute(
+                      isFav: false,
+                      minMarks: 0,
+                      branch: SelectBranch.dropdownvalue,
+                      user: "institute",
+                      name: nameController.text,
+                      filledSeats: 0,
+                      totalSeats: int.parse(seatsController.text),
+                      email: emailController.text,
+                      loginemail: Signup.mailController.text,
+                      password: Signup.passwordController.text,
+                      ashiiCode: int.parse(ashiiController.text),
+                      address: addressController.text,
+                      site: siteController.text,
+                      phone: phoneController.text,
+                    );
+                    db.collection("institutes").add(
+                          branchInstitute.toFirestore(),
+                        );
                     //move to new page
                     Navigator.pushNamedAndRemoveUntil(
                       context,

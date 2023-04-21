@@ -20,6 +20,7 @@ class _SignupState extends State<Signup> {
   var _passwordVisible = false;
   var _conPasswordVisible = false;
 
+  static TextEditingController confpasswordController = TextEditingController();
   // final FirebaseFirestore db = FirebaseFirestore.instance;
 
   // TextEditingController nameController = TextEditingController();
@@ -129,6 +130,44 @@ class _SignupState extends State<Signup> {
                   height: 20,
                 ),
 
+                TextFormField(
+                  obscureText: !_conPasswordVisible,
+                  controller: confpasswordController,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Password can't be empty";
+                    } else if (value != Signup.passwordController.text) {
+                      return "Password is not same";
+                    }
+                    return null;
+                  },
+                  // decoration: const InputDecoration(
+                  //   border: OutlineInputBorder(),
+                  //   labelText: 'Confirm Password',
+                  // ),
+                  decoration: InputDecoration(
+                    labelText: 'Confirm Password',
+                    hintText: 'Enter your confirm password',
+                    // Here is key idea
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        // Based on passwordVisible state choose the icon
+                        _conPasswordVisible
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                      ),
+                      onPressed: () {
+                        // Update the state i.e. toogle the state of passwordVisible variable
+                        setState(() {
+                          _conPasswordVisible = !_conPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
+                ),
+                SizedBox(
+                  height: 20,
+                ),
                 SizedBox(
                   height: 50,
                   width: double.infinity,

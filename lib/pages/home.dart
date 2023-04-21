@@ -6,6 +6,7 @@ import 'dart:async';
 // import 'package:ai_app/widgets/all_problem.dart';
 // import 'package:ai_app/widgets/user_problem.dart';
 // import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
@@ -18,54 +19,57 @@ import 'package:seats_availability_in_university/pages/profile.dart';
 import '../models/institute.dart';
 // import 'package:timezone/timezone.dart' as tz;
 
-List<Institute> institutes = [
-  Institute(
-    name: "GP, Gandhinagar",
-    email: "principal_gpg@yahoo.co.in",
-    ashiiCode: 382028,
-    address: "k-6, Electronics Indust. Estate, Sector-26, Gandhinagar - 382028",
-    phone: "(079) 23287433",
-    site: "www.gpgandhinagar.edu.in",
-    isFav: false,
-    branch: [],
-    minMarks: 70,
-  ),
-  Institute(
-    name: "R.C. Technical Institute",
-    email: "rctisola@yahoo.com",
-    ashiiCode: 380060,
-    address:
-        "Ahemedabad sarkej-Gandhinagar Highway, opp. Gujarat High Court, Sola, Ahmedabad - 380060",
-    phone: "(079) 27664785",
-    site: "www.rcti.in",
-    isFav: false,
-    branch: [],
-    minMarks: 70,
-  ),
-  Institute(
-    name: "R.C. Technical Institute",
-    email: "rctisola@yahoo.com",
-    ashiiCode: 380060,
-    address:
-        "Ahemedabad sarkej-Gandhinagar Highway, opp. Gujarat High Court, Sola, Ahmedabad - 380060",
-    phone: "(079) 27664785",
-    site: "www.rcti.in",
-    isFav: false,
-    branch: [],
-    minMarks: 70,
-  ),
-  Institute(
-    name: "R.C. Technical Institute",
-    email: "rctisola@yahoo.com",
-    ashiiCode: 380060,
-    address:
-        "Ahemedabad sarkej-Gandhinagar Highway, opp. Gujarat High Court, Sola, Ahmedabad - 380060",
-    phone: "(079) 27664785",
-    site: "www.rcti.in",
-    isFav: false,
-    branch: [],
-    minMarks: 70,
-  ),
+List<BranchInstitute> branchesInstitutes = [
+  // Institute(
+  //   name: "GP, Gandhinagar",
+  //   email: "principal_gpg@yahoo.co.in",
+  //   ashiiCode: 382028,
+  //   address: "k-6, Electronics Indust. Estate, Sector-26, Gandhinagar - 382028",
+  //   phone: "(079) 23287433",
+  //   site: "www.gpgandhinagar.edu.in", user: 'Institute',
+  //   // isFav: false,
+  //   // branch: [],
+  //   // minMarks: 70,
+  // ),
+  // Institute(
+  //   name: "R.C. Technical Institute",
+  //   email: "rctisola@yahoo.com",
+  //   ashiiCode: 380060,
+  //   address:
+  //       "Ahemedabad sarkej-Gandhinagar Highway, opp. Gujarat High Court, Sola, Ahmedabad - 380060",
+  //   phone: "(079) 27664785",
+  //   site: "www.rcti.in",
+  //   user: 'Institute',
+  //   // isFav: false,
+  //   // branch: [],
+  //   // minMarks: 70,
+  // ),
+  // Institute(
+  //   name: "R.C. Technical Institute",
+  //   email: "rctisola@yahoo.com",
+  //   ashiiCode: 380060,
+  //   address:
+  //       "Ahemedabad sarkej-Gandhinagar Highway, opp. Gujarat High Court, Sola, Ahmedabad - 380060",
+  //   phone: "(079) 27664785",
+  //   site: "www.rcti.in",
+  //   user: 'Institute',
+  //   // isFav: false,
+  //   // branch: [],
+  //   // minMarks: 70,
+  // ),
+  // Institute(
+  //   name: "R.C. Technical Institute",
+  //   email: "rctisola@yahoo.com",
+  //   ashiiCode: 380060,
+  //   address:
+  //       "Ahemedabad sarkej-Gandhinagar Highway, opp. Gujarat High Court, Sola, Ahmedabad - 380060",
+  //   phone: "(079) 27664785",
+  //   site: "www.rcti.in",
+  //   user: 'Institute',
+  // isFav: false,
+  // branch: [],
+  // minMarks: 70,
+  // ),
 ];
 
 class Home extends StatefulWidget {
@@ -80,6 +84,64 @@ class _HomeState extends State<Home> {
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
+    });
+  }
+
+  late Future _initProblemsData;
+  List<String> _docIds = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    _initProblemsData = _initProblems();
+    super.initState();
+  }
+
+  Future<void> _initProblems() async {
+    List<String> documentIds = [];
+    FirebaseFirestore.instance.collection('institutes').get().then(
+      (doc) {
+        // final data = doc.docs.length;
+        for (var element in doc.docs) {
+          branchesInstitutes
+              .add(BranchInstitute.fromFirestore(element, SnapshotOptions()));
+        }
+      },
+      onError: (e) => print("Error getting document: $e"),
+      // (snapshot) => snapshot.docs.forEach(
+      //   (document) {
+      //     // documentIds.add(document.reference.id);
+      //     branchesInstitutes.add(
+      //       BranchInstitute.fromFirestore(
+      //         document,
+      //         SnapshotOptions(),
+      //       ),
+      //     );
+      //   },
+      // ),
+    );
+
+    _docIds = documentIds;
+  }
+
+  Future<void> refreshProblems() async {
+    List<String> documentIds = [];
+    await FirebaseFirestore.instance.collection('institutes').get().then(
+          (snapshot) => snapshot.docs.forEach(
+            (document) {
+              // documentIds.add(document.reference.id);
+              // document.data();
+              branchesInstitutes.add(
+                BranchInstitute.fromFirestore(
+                  document,
+                  SnapshotOptions(),
+                ),
+              );
+            },
+          ),
+        );
+    setState(() {
+      _docIds = documentIds;
     });
   }
 
@@ -108,8 +170,12 @@ class _HomeState extends State<Home> {
 // }
 
     List<Widget> widgetOptions = <Widget>[
-      AllInstitute(),
-      FavInstitute(),
+      AllInstitute(
+        refreshProblems: refreshProblems,
+      ),
+      FavInstitute(
+        refreshProblems: refreshProblems,
+      ),
       Profile(),
       // MapMun(
       //     cameraTarget: cameraTarget,

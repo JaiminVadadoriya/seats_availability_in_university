@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:seats_availability_in_university/models/student.dart';
 
 import '../utils/routes.dart';
 import 'loginpages/sign.dart';
@@ -13,6 +14,8 @@ class StudentDetail extends StatelessWidget {
   static TextEditingController mark1Controller = TextEditingController();
   static TextEditingController mark2Controller = TextEditingController();
   static TextEditingController mark3Controller = TextEditingController();
+  static TextEditingController mark4Controller = TextEditingController();
+  static TextEditingController mark5Controller = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -48,10 +51,10 @@ class StudentDetail extends StatelessWidget {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Number can't be empty";
-                  } else if (int.parse(value) < 10) {
-                    return "Number is not less than 10";
-                  } else if (int.parse(value) > 70) {
-                    return "Number is not greater than 70";
+                  } else if (int.parse(value) < 34) {
+                    return "Number is not less than 34";
+                  } else if (int.parse(value) > 100) {
+                    return "Number is not greater than 100";
                   }
                   return null;
                 },
@@ -71,10 +74,10 @@ class StudentDetail extends StatelessWidget {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Number can't be empty";
-                  } else if (int.parse(value) < 10) {
-                    return "Number is not less than 10";
-                  } else if (int.parse(value) > 70) {
-                    return "Number is not greater than 70";
+                  } else if (int.parse(value) < 34) {
+                    return "Number is not less than 34";
+                  } else if (int.parse(value) > 100) {
+                    return "Number is not greater than 100";
                   }
                   return null;
                 },
@@ -93,10 +96,10 @@ class StudentDetail extends StatelessWidget {
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return "Number can't be empty";
-                  } else if (int.parse(value) < 10) {
-                    return "Number is not less than 10";
-                  } else if (int.parse(value) > 70) {
-                    return "Number is not greater than 70";
+                  } else if (int.parse(value) < 34) {
+                    return "Number is not less than 34";
+                  } else if (int.parse(value) > 100) {
+                    return "Number is not greater than 100";
                   }
                   return null;
                 },
@@ -110,20 +113,77 @@ class StudentDetail extends StatelessWidget {
               SizedBox(
                 height: 20,
               ),
+              TextFormField(
+                controller: mark4Controller,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Number can't be empty";
+                  } else if (int.parse(value) < 34) {
+                    return "Number is not less than 34";
+                  } else if (int.parse(value) > 100) {
+                    return "Number is not greater than 100";
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: "",
+                  labelText: "SocialScience marks",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                controller: mark5Controller,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Number can't be empty";
+                  } else if (int.parse(value) < 34) {
+                    return "Number is not less than 34";
+                  } else if (int.parse(value) > 100) {
+                    return "Number is not greater than 100";
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: "",
+                  labelText: "Gujrati marks",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.number,
+              ),
+              SizedBox(
+                height: 20,
+              ),
               ElevatedButton(
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     //save data
 
                     final db = FirebaseFirestore.instance;
-                    db.collection("students").add({
-                      "r_email": Signup.mailController.text,
-                      "r_password": Signup.passwordController.text,
-                      "name": nameController.text,
-                      "maths": int.parse(mark1Controller.text),
-                      "science": int.parse(mark2Controller.text),
-                      "english": int.parse(mark3Controller.text),
-                    });
+                    Student student = Student(
+                      name: nameController.text,
+                      email: Signup.mailController.text,
+                      maths: int.parse(mark1Controller.text),
+                      science: int.parse(mark2Controller.text),
+                      english: int.parse(mark3Controller.text),
+                      socialScience: int.parse(mark4Controller.text),
+                      gujrati: int.parse(mark5Controller.text),
+                      user: "student",
+                      password: Signup.passwordController.text,
+                      fav: [],
+                    );
+                    db.collection("students").add(student.toFirestore());
+                    // db.collection("students").add({
+                    //   "r_email": Signup.mailController.text,
+                    //   "r_password": Signup.passwordController.text,
+                    //   "name": nameController.text,
+                    //   "maths": int.parse(mark1Controller.text),
+                    //   "science": int.parse(mark2Controller.text),
+                    //   "english": int.parse(mark3Controller.text),
+                    // });
                     //move to new page
                     Navigator.pushNamedAndRemoveUntil(
                       context,
