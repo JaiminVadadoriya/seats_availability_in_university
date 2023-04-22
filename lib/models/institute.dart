@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Institute {
+  final String uid;
   final String user;
   final String name;
   final String loginemail;
@@ -15,6 +16,7 @@ class Institute {
   final String password;
 
   Institute({
+    required this.uid,
     required this.user,
     required this.name,
     required this.email,
@@ -27,6 +29,7 @@ class Institute {
   });
 
   Institute copyWith({
+    String? uid,
     String? user,
     String? name,
     String? email,
@@ -37,6 +40,7 @@ class Institute {
     String? phone,
   }) {
     return Institute(
+      uid: uid ?? this.uid,
       user: user ?? this.user,
       name: name ?? this.name,
       email: email ?? this.email,
@@ -51,6 +55,7 @@ class Institute {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'uid': uid,
       'user': user,
       'name': name,
       'email': email,
@@ -85,6 +90,7 @@ class Institute {
   ) {
     final data = snapshot.data();
     return Institute(
+      uid: data?['uid'],
       user: data?['user'],
       name: data?['name'],
       email: data?['email'],
@@ -99,6 +105,7 @@ class Institute {
 
   Map<String, dynamic> toFirestore() {
     return {
+      if (uid != null) "uid": uid,
       if (name != null) "name": name,
       if (user != null) "user": user,
       if (email != null) "email": email,
@@ -114,6 +121,7 @@ class Institute {
 
   factory Institute.fromMap(Map<String, dynamic> map) {
     return Institute(
+      uid: map['uid'] as String,
       user: map['user'] as String,
       name: map['name'] as String,
       email: map['email'] as String,
@@ -132,32 +140,38 @@ class Institute {
       Institute.fromMap(json.decode(source) as Map<String, dynamic>);
 
   @override
+  int get hashCode {
+    return uid.hashCode ^
+        user.hashCode ^
+        name.hashCode ^
+        loginemail.hashCode ^
+        email.hashCode ^
+        ashiiCode.hashCode ^
+        address.hashCode ^
+        site.hashCode ^
+        phone.hashCode ^
+        password.hashCode;
+  }
+
+  @override
   String toString() {
-    return 'Institute(user: $user, name: $name, email: $email, ashiiCode: $ashiiCode, address: $address, site: $site, phone: $phone)';
+    return 'Institute(uid: $uid, user: $user, name: $name, loginemail: $loginemail, email: $email, ashiiCode: $ashiiCode, address: $address, site: $site, phone: $phone, password: $password)';
   }
 
   @override
   bool operator ==(covariant Institute other) {
     if (identical(this, other)) return true;
 
-    return other.user == user &&
+    return other.uid == uid &&
+        other.user == user &&
         other.name == name &&
+        other.loginemail == loginemail &&
         other.email == email &&
         other.ashiiCode == ashiiCode &&
         other.address == address &&
         other.site == site &&
-        other.phone == phone;
-  }
-
-  @override
-  int get hashCode {
-    return user.hashCode ^
-        name.hashCode ^
-        email.hashCode ^
-        ashiiCode.hashCode ^
-        address.hashCode ^
-        site.hashCode ^
-        phone.hashCode;
+        other.phone == phone &&
+        other.password == password;
   }
 }
 
@@ -173,6 +187,7 @@ class BranchInstitute extends Institute {
     required this.branch,
     required this.filledSeats,
     required this.totalSeats,
+    required super.uid,
     required super.user,
     required super.name,
     required super.email,
@@ -238,6 +253,7 @@ class BranchInstitute extends Institute {
 
     return BranchInstitute(
       isFav: data?['isFav'],
+      uid: data?['uid'],
       user: data?['user'],
       name: data?['name'],
       email: data?['email'],
@@ -258,6 +274,7 @@ class BranchInstitute extends Institute {
   Map<String, dynamic> toFirestore() {
     return {
       if (name != null) "name": name,
+      if (uid != null) "uid": uid,
       if (user != null) "user": user,
       if (email != null) "email": email,
       if (loginemail != null) "loginemail": loginemail,
@@ -288,6 +305,26 @@ class BranchInstitute extends Institute {
   //     phone: map['phone'] as String,
   //   );
   // }
+
+  @override
+  bool operator ==(covariant BranchInstitute other) {
+    if (identical(this, other)) return true;
+
+    return other.minMarks == minMarks &&
+        other.totalSeats == totalSeats &&
+        other.filledSeats == filledSeats &&
+        other.isFav == isFav &&
+        other.branch == branch;
+  }
+
+  @override
+  int get hashCode {
+    return minMarks.hashCode ^
+        totalSeats.hashCode ^
+        filledSeats.hashCode ^
+        isFav.hashCode ^
+        branch.hashCode;
+  }
 }
 
   // String toJson() => json.encode(toMap());

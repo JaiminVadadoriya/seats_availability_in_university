@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
@@ -11,6 +12,7 @@ class StudentDetail extends StatelessWidget {
   StudentDetail({super.key});
   final _formKey = GlobalKey<FormState>();
   static TextEditingController nameController = TextEditingController();
+  static TextEditingController seatController = TextEditingController();
   static TextEditingController mark1Controller = TextEditingController();
   static TextEditingController mark2Controller = TextEditingController();
   static TextEditingController mark3Controller = TextEditingController();
@@ -42,6 +44,24 @@ class StudentDetail extends StatelessWidget {
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.name,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextFormField(
+                controller: seatController,
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Seat Number can't be empty";
+                  }
+                  return null;
+                },
+                decoration: InputDecoration(
+                  hintText: "",
+                  labelText: "Seat Number",
+                  border: OutlineInputBorder(),
+                ),
+                keyboardType: TextInputType.text,
               ),
               SizedBox(
                 height: 20,
@@ -164,8 +184,10 @@ class StudentDetail extends StatelessWidget {
 
                     final db = FirebaseFirestore.instance;
                     Student student = Student(
+                      uid: FirebaseAuth.instance.currentUser!.uid,
                       name: nameController.text,
                       email: Signup.mailController.text,
+                      seatNo: seatController.text,
                       maths: int.parse(mark1Controller.text),
                       science: int.parse(mark2Controller.text),
                       english: int.parse(mark3Controller.text),

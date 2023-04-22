@@ -1,16 +1,16 @@
+
 # seats_availability_in_university
 
-A new Collage project.
+A project in which the admissions process to online. We take student marks and then we also give a prediction of chances to get selected by institutes. This project was made up with Flutter so we can use it on other platforms. We work on Android so in future we also publish our project on different platforms.
 
-## Getting Started
+In this project, we used Firebase as server and authentication. In the Server, we used Firestore which provides real-time data. 
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
+## Installation
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Install my-project using the flutter command
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+```bash
+  flutter pub get
+```
+then you have to connect Firebase for authentication and get data from the server.

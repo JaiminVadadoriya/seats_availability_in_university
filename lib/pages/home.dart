@@ -15,8 +15,11 @@ import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:seats_availability_in_university/pages/all_institute.dart';
 import 'package:seats_availability_in_university/pages/fav_institute.dart';
 import 'package:seats_availability_in_university/pages/profile.dart';
+import 'package:seats_availability_in_university/widgets/filter_drawer.dart';
 
 import '../models/institute.dart';
+import '../utils/globals.dart';
+import '../widgets/signout_drawer.dart';
 // import 'package:timezone/timezone.dart' as tz;
 
 List<BranchInstitute> branchesInstitutes = [
@@ -99,27 +102,32 @@ class _HomeState extends State<Home> {
 
   Future<void> _initProblems() async {
     List<String> documentIds = [];
-    FirebaseFirestore.instance.collection('institutes').get().then(
-      (doc) {
-        // final data = doc.docs.length;
-        for (var element in doc.docs) {
-          branchesInstitutes
-              .add(BranchInstitute.fromFirestore(element, SnapshotOptions()));
-        }
-      },
-      onError: (e) => print("Error getting document: $e"),
-      // (snapshot) => snapshot.docs.forEach(
-      //   (document) {
-      //     // documentIds.add(document.reference.id);
-      //     branchesInstitutes.add(
-      //       BranchInstitute.fromFirestore(
-      //         document,
-      //         SnapshotOptions(),
-      //       ),
-      //     );
-      //   },
-      // ),
-    );
+    await FirebaseFirestore.instance.collection('institutes').get().then(
+          (snapshot) => snapshot.docs.forEach(
+            (document) {
+              // documentIds.add(document.reference.id);
+              // document.data();
+              BranchInstitute temp = BranchInstitute.fromFirestore(
+                document,
+                SnapshotOptions(),
+              );
+              branchesInstitutes.contains(temp)
+                  ? null
+                  : branchesInstitutes.add(temp);
+            },
+          ),
+          // (snapshot) => snapshot.docs.forEach(
+          //   (document) {
+          //     // documentIds.add(document.reference.id);
+          //     branchesInstitutes.add(
+          //       BranchInstitute.fromFirestore(
+          //         document,
+          //         SnapshotOptions(),
+          //       ),
+          //     );
+          //   },
+          // ),
+        );
 
     _docIds = documentIds;
   }
@@ -131,12 +139,13 @@ class _HomeState extends State<Home> {
             (document) {
               // documentIds.add(document.reference.id);
               // document.data();
-              branchesInstitutes.add(
-                BranchInstitute.fromFirestore(
-                  document,
-                  SnapshotOptions(),
-                ),
+              BranchInstitute temp = BranchInstitute.fromFirestore(
+                document,
+                SnapshotOptions(),
               );
+              branchesInstitutes.contains(temp)
+                  ? null
+                  : branchesInstitutes.add(temp);
             },
           ),
         );
@@ -185,22 +194,33 @@ class _HomeState extends State<Home> {
     ];
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      key: Globals.scaffoldKey,
+
+      //
+      // ---> below we provide filter
+      //
+
+      endDrawer: FilterDrawer(),
+
+      //
+      // ---> below we provide Signout logic
+      //
+
+      drawer: SignoutDrawer(),
+
+      //
+      // ---> below we provide appbar logic
+      //
+
       appBar: _selectedIndex == 0
           ? AppBar(
               title: const Text("Home"),
-              // actions: <Widget>[
-              //   // on pressing icon button the camera will take to user current location
-              //   IconButton(
-              //     tooltip: 'find current location',
-              //     icon: const Icon(Icons.location_searching_rounded),
-              //     onPressed: () {
-              //       // dekhBinod();
-              //     },
-              //   ),
-              // ],
             )
           : AppBar(
               title: const Text("Colleges"),
+              actions: <Widget>[
+                new Container(),
+              ],
             ),
       // body: Center(
       //   child: RefreshIndicator(
@@ -243,7 +263,6 @@ class _HomeState extends State<Home> {
       //   ),
       // ),
       body: widgetOptions.elementAt(_selectedIndex),
-      // on pressing floating action button the camera will take to user current location
 
       // bottomNavigationBar: BottomNavigationBar(
       //   elevation: 0,
@@ -277,6 +296,11 @@ class _HomeState extends State<Home> {
       //   selectedItemColor: Colors.black87,
       //   onTap: _onItemTapped,
       // ),
+
+      //
+      // ---> below we provide bottom nav bar logic
+      //
+
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(
           horizontal: 10.0,

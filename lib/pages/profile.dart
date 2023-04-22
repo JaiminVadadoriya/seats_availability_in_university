@@ -15,13 +15,15 @@ class Profile extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const CircleAvatar(
-                radius: 40,
-                child: Padding(
-                  padding: EdgeInsets.all(5),
-                  child: Icon(
-                    Icons.account_circle,
-                    size: 30,
+              Expanded(
+                child: const CircleAvatar(
+                  radius: 40,
+                  child: Padding(
+                    padding: EdgeInsets.all(5),
+                    child: Icon(
+                      Icons.account_circle,
+                      size: 30,
+                    ),
                   ),
                 ),
               ),
@@ -29,16 +31,18 @@ class Profile extends StatelessWidget {
                 "Admin",
                 style: TextStyle(fontSize: 29),
               ),
-              ListView.builder(
-                itemCount: 3,
-                itemBuilder: (context, index) {
-                  return ListTile(
-                    title: Text(
-                      "Admin",
-                      style: TextStyle(fontSize: 29),
-                    ),
-                  );
-                },
+              Expanded(
+                child: ListView.builder(
+                  itemCount: 3,
+                  itemBuilder: (context, index) {
+                    return ListTile(
+                      title: Text(
+                        "Admin",
+                        style: TextStyle(fontSize: 29),
+                      ),
+                    );
+                  },
+                ),
               ),
             ],
           ),

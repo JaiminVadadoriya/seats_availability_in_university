@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:seats_availability_in_university/models/institute.dart';
 import 'package:seats_availability_in_university/pages/loginpages/sign.dart';
@@ -194,6 +195,7 @@ class InstituteDetail extends StatelessWidget {
 
                     final db = FirebaseFirestore.instance;
                     BranchInstitute branchInstitute = BranchInstitute(
+                      uid: FirebaseAuth.instance.currentUser!.uid,
                       isFav: false,
                       minMarks: 0,
                       branch: SelectBranch.dropdownvalue,

@@ -5,10 +5,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 
 class Student {
+  final String uid;
   final String user;
   final String password;
   final String name;
   final String email;
+  final String seatNo;
   final int maths;
   final int science;
   final int english;
@@ -17,10 +19,12 @@ class Student {
   final List<String> fav;
 
   Student({
+    required this.uid,
     required this.user,
     required this.password,
     required this.name,
     required this.email,
+    required this.seatNo,
     required this.maths,
     required this.science,
     required this.english,
@@ -30,10 +34,12 @@ class Student {
   });
 
   Student copyWith({
+    String? uid,
     String? user,
     String? password,
     String? name,
     String? email,
+    String? seatNo,
     int? maths,
     int? science,
     int? english,
@@ -42,9 +48,11 @@ class Student {
     List<String>? fav,
   }) {
     return Student(
+      uid: uid ?? this.uid,
       user: user ?? this.user,
       name: name ?? this.name,
       email: email ?? this.email,
+      seatNo: seatNo ?? this.seatNo,
       maths: maths ?? this.maths,
       science: science ?? this.science,
       english: english ?? this.english,
@@ -57,10 +65,12 @@ class Student {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'uid': uid,
       'user': user,
       'password': password,
       'name': name,
       'email': email,
+      'seatNo': seatNo,
       'maths': maths,
       'science': science,
       'english': english,
@@ -72,9 +82,11 @@ class Student {
 
   Map<String, dynamic> toFirestore() {
     return {
+      if (uid != null) 'uid': uid,
       if (name != null) "name": name,
       if (password != null) 'password': password,
       if (user != null) 'user': user,
+      if (seatNo != null) 'seatNo': seatNo,
       if (email != null) 'email': email,
       if (maths != null) 'maths': maths,
       if (science != null) 'science': science,
@@ -91,10 +103,12 @@ class Student {
   ) {
     final data = snapshot.data();
     return Student(
+      uid: data?['uid'] as String,
       user: data?['user'] as String,
       password: data?['password'] as String,
       name: data?['name'] as String,
       email: data?['email'] as String,
+      seatNo: data?['seatNo'] as String,
       maths: data?['maths'] as int,
       science: data?['science'] as int,
       english: data?['english'] as int,
@@ -108,10 +122,12 @@ class Student {
 
   factory Student.fromMap(Map<String, dynamic> map) {
     return Student(
+      uid: map['uid'] as String,
       name: map['name'] as String,
       user: map['user'] as String,
       password: map['password'] as String,
       email: map['email'] as String,
+      seatNo: map['seatNo'] as String,
       maths: map['maths'] as int,
       science: map['science'] as int,
       english: map['english'] as int,
@@ -137,20 +153,28 @@ class Student {
   bool operator ==(covariant Student other) {
     if (identical(this, other)) return true;
 
-    return other.name == name &&
+    return other.user == user &&
+        other.password == password &&
+        other.name == name &&
         other.email == email &&
+        other.seatNo == seatNo &&
         other.maths == maths &&
         other.science == science &&
         other.english == english &&
         other.socialScience == socialScience &&
         other.gujrati == gujrati &&
+        other.uid == uid &&
         listEquals(other.fav, fav);
   }
 
   @override
   int get hashCode {
-    return name.hashCode ^
+    return uid.hashCode ^
+        user.hashCode ^
+        password.hashCode ^
+        name.hashCode ^
         email.hashCode ^
+        seatNo.hashCode ^
         maths.hashCode ^
         science.hashCode ^
         english.hashCode ^
