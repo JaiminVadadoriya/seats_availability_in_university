@@ -134,7 +134,7 @@ class Student {
       socialScience: map['socialScience'] as int,
       gujrati: map['gujrati'] as int,
       fav: List<String>.from(
-        (map['fav'] as List<String>),
+        (map['fav']),
       ),
     );
   }
@@ -153,7 +153,8 @@ class Student {
   bool operator ==(covariant Student other) {
     if (identical(this, other)) return true;
 
-    return other.user == user &&
+    return other.uid == uid &&
+        other.user == user &&
         other.password == password &&
         other.name == name &&
         other.email == email &&
@@ -163,7 +164,6 @@ class Student {
         other.english == english &&
         other.socialScience == socialScience &&
         other.gujrati == gujrati &&
-        other.uid == uid &&
         listEquals(other.fav, fav);
   }
 

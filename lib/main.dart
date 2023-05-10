@@ -26,10 +26,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
       create: (context) => GoogleSignInProvider(),
       child: MaterialApp(
-        themeMode: ThemeMode.light,
+        themeMode: ThemeMode.system,
         // theme: MyTheme.lightTheme,
-        theme: MyTheme.lightTheme(context),
-        darkTheme: MyTheme.darkTheme(context),
+        // theme: MyTheme.lightTheme(context),
+        // darkTheme: MyTheme.darkTheme(context),
+        theme: ThemeData(useMaterial3: true, colorScheme: lightColorScheme),
+        darkTheme: ThemeData(useMaterial3: true, colorScheme: darkColorScheme),
         debugShowCheckedModeBanner: false,
         // initialRoute: MyRoutes.signRoute,
 

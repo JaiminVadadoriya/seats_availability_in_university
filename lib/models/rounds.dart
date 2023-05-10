@@ -1,0 +1,129 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class Rounds {
+  final Timestamp firstRoundStart;
+  final Timestamp firstRoundEnd;
+  final Timestamp secondRoundStart;
+  final Timestamp secondRoundEnd;
+  bool firstRoundOpen(Timestamp cureentTime) {
+    // if (
+    if (firstRoundStart.compareTo(cureentTime) < 0 &&
+        firstRoundEnd.compareTo(cureentTime) > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  bool secondRoundOpen(Timestamp cureentTime) {
+    if (firstRoundStart.compareTo(cureentTime) < 0 &&
+        firstRoundEnd.compareTo(cureentTime) > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  bool roundOpen(Timestamp cureentTime) {
+    if (firstRoundStart.compareTo(cureentTime) < 0 &&
+        firstRoundEnd.compareTo(cureentTime) > 0) {
+      return true;
+    } else if (secondRoundStart.compareTo(cureentTime) < 0 &&
+        secondRoundEnd.compareTo(cureentTime) > 0) {
+      return true;
+    }
+    return false;
+  }
+
+  Rounds({
+    required this.firstRoundStart,
+    required this.firstRoundEnd,
+    required this.secondRoundStart,
+    required this.secondRoundEnd,
+  });
+
+  Rounds copyWith({
+    Timestamp? firstRoundStart,
+    Timestamp? firstRoundEnd,
+    Timestamp? secondRoundStart,
+    Timestamp? secondRoundEnd,
+  }) {
+    return Rounds(
+      firstRoundStart: firstRoundStart ?? this.firstRoundStart,
+      firstRoundEnd: firstRoundEnd ?? this.firstRoundEnd,
+      secondRoundStart: secondRoundStart ?? this.secondRoundStart,
+      secondRoundEnd: secondRoundEnd ?? this.secondRoundEnd,
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'firstRoundStart': firstRoundStart,
+      'firstRoundEnd': firstRoundEnd,
+      'secondRoundStart': secondRoundStart,
+      'secondRoundEnd': secondRoundEnd,
+    };
+  }
+
+  factory Rounds.fromMap(Map<String, dynamic> map) {
+    return Rounds(
+      firstRoundStart: map['firstRoundStart'] as Timestamp,
+      firstRoundEnd: map['firstRoundEnd'] as Timestamp,
+      secondRoundStart: map['secondRoundStart'] as Timestamp,
+      secondRoundEnd: map['secondRoundEnd'] as Timestamp,
+    );
+  }
+
+  Map<String, dynamic> toFirestore() {
+    return {
+      if (firstRoundStart != null) 'firstRoundStart': firstRoundStart,
+      if (firstRoundEnd != null) 'firstRoundEnd': firstRoundEnd,
+      if (secondRoundStart != null) 'secondRoundStart': secondRoundStart,
+      if (secondRoundEnd != null) 'secondRoundEnd': secondRoundEnd,
+      // if ( != null) "": ,
+    };
+  }
+
+  factory Rounds.fromFirestore(
+    DocumentSnapshot<Map<String, dynamic>> snapshot,
+    SnapshotOptions? options,
+  ) {
+    final data = snapshot.data();
+    return Rounds(
+      // 'id': id,
+      firstRoundStart: data?['firstRoundStart'],
+      firstRoundEnd: data?['firstRoundEnd'],
+      secondRoundStart: data?['secondRoundStart'],
+      secondRoundEnd: data?['secondRoundEnd'],
+    );
+  }
+
+  String toJson() => json.encode(toMap());
+
+  factory Rounds.fromJson(String source) =>
+      Rounds.fromMap(json.decode(source) as Map<String, dynamic>);
+
+  @override
+  String toString() {
+    return 'Rounds(firstRoundStart: $firstRoundStart, firstRoundEnd: $firstRoundEnd, secondRoundStart: $secondRoundStart, secondRoundEnd: $secondRoundEnd)';
+  }
+
+  @override
+  bool operator ==(covariant Rounds other) {
+    if (identical(this, other)) return true;
+
+    return other.firstRoundStart == firstRoundStart &&
+        other.firstRoundEnd == firstRoundEnd &&
+        other.secondRoundStart == secondRoundStart &&
+        other.secondRoundEnd == secondRoundEnd;
+  }
+
+  @override
+  int get hashCode {
+    return firstRoundStart.hashCode ^
+        firstRoundEnd.hashCode ^
+        secondRoundStart.hashCode ^
+        secondRoundEnd.hashCode;
+  }
+}

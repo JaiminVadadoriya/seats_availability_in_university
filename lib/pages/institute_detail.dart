@@ -6,6 +6,7 @@ import 'package:seats_availability_in_university/pages/loginpages/sign.dart';
 import 'package:seats_availability_in_university/widgets/select_branch.dart';
 
 import '../utils/routes.dart';
+import 'home.dart';
 
 class InstituteDetail extends StatelessWidget {
   InstituteDetail({super.key});
@@ -65,7 +66,7 @@ class InstituteDetail extends StatelessWidget {
                   labelText: "Institute Email",
                   border: OutlineInputBorder(),
                 ),
-                keyboardType: TextInputType.url,
+                keyboardType: TextInputType.emailAddress,
               ),
               SizedBox(
                 height: 20,
@@ -153,7 +154,7 @@ class InstituteDetail extends StatelessWidget {
                 controller: seatsController,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
-                    return "merit can't be empty";
+                    return "Seats can't be empty";
                   } else if (int.parse(value) < 0) {
                     return 'Seats is not in negeative';
                   }
@@ -194,15 +195,14 @@ class InstituteDetail extends StatelessWidget {
                     //save data
 
                     final db = FirebaseFirestore.instance;
-                    BranchInstitute branchInstitute = BranchInstitute(
+                    Institute branchInstitute = Institute(
                       uid: FirebaseAuth.instance.currentUser!.uid,
-                      isFav: false,
-                      minMarks: 0,
-                      branch: SelectBranch.dropdownvalue,
+
+                      // branch: SelectBranch.dropdownvalue,
                       user: "institute",
                       name: nameController.text,
-                      filledSeats: 0,
-                      totalSeats: int.parse(seatsController.text),
+                      // filledSeats: 0,
+                      branches: [],
                       email: emailController.text,
                       loginemail: Signup.mailController.text,
                       password: Signup.passwordController.text,
@@ -211,9 +211,37 @@ class InstituteDetail extends StatelessWidget {
                       site: siteController.text,
                       phone: phoneController.text,
                     );
-                    db.collection("institutes").add(
+                    print("branch - ${branchInstitute}");
+                    db
+                        .collection("institutes")
+                        .add(
                           branchInstitute.toFirestore(),
+                        )
+                        .then((value) {
+                      print(value.id);
+                      db
+                          .collection("institutes")
+                          .doc(value.id)
+                          .collection("branch")
+                          .add(Branch(
+                            bID: "",
+                            minMarks: 0,
+                            totalSeats: int.parse(seatsController.text),
+                            filledSeats: 0,
+                            branchName: SelectBranch.dropdownvalue,
+                          ).toMap())
+                          .then((val) {
+                        final branchRef = db
+                            .collection("institutes")
+                            .doc(value.id)
+                            .collection("branch")
+                            .doc(val.id)
+                            .update(
+                          {"bID": val.id},
                         );
+                        value.id;
+                      });
+                    });
                     //move to new page
                     Navigator.pushNamedAndRemoveUntil(
                       context,

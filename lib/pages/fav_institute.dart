@@ -6,11 +6,11 @@ import 'package:flutter/src/widgets/placeholder.dart';
 import 'home.dart';
 
 class FavInstitute extends StatefulWidget {
-  Future<void> Function() refreshProblems;
+  Future<void> Function() refreshInstitute;
 
   FavInstitute({
     Key? key,
-    required this.refreshProblems,
+    required this.refreshInstitute,
   }) : super(key: key);
 
   @override
@@ -21,7 +21,7 @@ class _FavInstituteState extends State<FavInstitute> {
   @override
   Widget build(BuildContext context) {
     return RefreshIndicator(
-      onRefresh: widget.refreshProblems,
+      onRefresh: widget.refreshInstitute,
       child: ListView.builder(
         itemCount: branchesInstitutes.length,
         // prototypeItem: Container(

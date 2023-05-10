@@ -27,7 +27,7 @@ class _SelectBranchState extends State<SelectBranch> {
     return Column(
       children: [
         Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 18),
+          padding: const EdgeInsets.symmetric(horizontal: 0),
           child: DropdownButton(
             hint: Text("Select Your Branch"),
             value: SelectBranch.dropdownvalue,
