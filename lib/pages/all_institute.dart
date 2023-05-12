@@ -9,6 +9,7 @@ import 'package:seats_availability_in_university/models/rounds.dart';
 
 import 'package:seats_availability_in_university/pages/details_page.dart';
 
+import '../main.dart';
 import '../models/institute.dart';
 import '../utils/globals.dart';
 import '../utils/routes.dart';
@@ -58,7 +59,27 @@ class _AllInstituteState extends State<AllInstitute>
 
   void updateList(String value) {
     // this is the function that will filter our list
-    if (value.isEmpty) {}
+    if (value.isNotEmpty) {
+      setState(() {
+        allbranchies = branchesInstitutes.where((element) {
+          element.branches = element.branches
+              .where((element) => element.branchName
+                  .toLowerCase()
+                  .contains(value.toLowerCase()))
+              .toList();
+          if (element.branches.isNotEmpty) {
+            return true;
+          }
+          return (element.name.toLowerCase().contains(value.toLowerCase()))
+              ? true
+              : false;
+        }).toList();
+      });
+    } else {
+      setState(() {
+        allbranchies = branchesInstitutes;
+      });
+    }
   }
 
   @override

@@ -4,6 +4,10 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Rounds {
+  final Timestamp registerStart;
+  final Timestamp registerEnd;
+  final Timestamp mockRoundStart;
+  final Timestamp mockRoundEnd;
   final Timestamp firstRoundStart;
   final Timestamp firstRoundEnd;
   final Timestamp secondRoundStart;
@@ -25,6 +29,14 @@ class Rounds {
     return false;
   }
 
+  bool registerOpen(Timestamp cureentTime) {
+    if (registerStart.compareTo(cureentTime) < 0 &&
+        registerEnd.compareTo(cureentTime) > 0) {
+      return true;
+    }
+    return false;
+  }
+
   bool roundOpen(Timestamp cureentTime) {
     if (firstRoundStart.compareTo(cureentTime) < 0 &&
         firstRoundEnd.compareTo(cureentTime) > 0) {
@@ -37,6 +49,10 @@ class Rounds {
   }
 
   Rounds({
+    required this.registerStart,
+    required this.registerEnd,
+    required this.mockRoundStart,
+    required this.mockRoundEnd,
     required this.firstRoundStart,
     required this.firstRoundEnd,
     required this.secondRoundStart,
@@ -44,6 +60,10 @@ class Rounds {
   });
 
   Rounds copyWith({
+    final Timestamp? registerStart,
+    final Timestamp? registerEnd,
+    final Timestamp? mockRoundStart,
+    final Timestamp? mockRoundEnd,
     Timestamp? firstRoundStart,
     Timestamp? firstRoundEnd,
     Timestamp? secondRoundStart,
@@ -54,6 +74,10 @@ class Rounds {
       firstRoundEnd: firstRoundEnd ?? this.firstRoundEnd,
       secondRoundStart: secondRoundStart ?? this.secondRoundStart,
       secondRoundEnd: secondRoundEnd ?? this.secondRoundEnd,
+      mockRoundEnd: mockRoundEnd ?? this.mockRoundEnd,
+      registerStart: registerStart ?? this.registerStart,
+      registerEnd: registerEnd ?? this.registerEnd,
+      mockRoundStart: mockRoundStart ?? this.mockRoundStart,
     );
   }
 
@@ -63,6 +87,10 @@ class Rounds {
       'firstRoundEnd': firstRoundEnd,
       'secondRoundStart': secondRoundStart,
       'secondRoundEnd': secondRoundEnd,
+      'registerStart': registerStart,
+      'registerEnd': registerEnd,
+      'mockRoundStart': mockRoundStart,
+      'mockRoundEnd': mockRoundEnd,
     };
   }
 
@@ -72,6 +100,10 @@ class Rounds {
       firstRoundEnd: map['firstRoundEnd'] as Timestamp,
       secondRoundStart: map['secondRoundStart'] as Timestamp,
       secondRoundEnd: map['secondRoundEnd'] as Timestamp,
+      registerStart: map['registerStart'] as Timestamp,
+      registerEnd: map['registerEnd'] as Timestamp,
+      mockRoundStart: map['mockRoundStart'] as Timestamp,
+      mockRoundEnd: map['mockRoundEnd'] as Timestamp,
     );
   }
 
@@ -81,6 +113,10 @@ class Rounds {
       if (firstRoundEnd != null) 'firstRoundEnd': firstRoundEnd,
       if (secondRoundStart != null) 'secondRoundStart': secondRoundStart,
       if (secondRoundEnd != null) 'secondRoundEnd': secondRoundEnd,
+      if (registerStart != null) 'registerStart': registerStart,
+      if (registerEnd != null) 'registerEnd': registerEnd,
+      if (mockRoundStart != null) 'mockRoundStart': mockRoundStart,
+      if (mockRoundEnd != null) 'mockRoundEnd': mockRoundEnd,
       // if ( != null) "": ,
     };
   }
@@ -96,6 +132,10 @@ class Rounds {
       firstRoundEnd: data?['firstRoundEnd'],
       secondRoundStart: data?['secondRoundStart'],
       secondRoundEnd: data?['secondRoundEnd'],
+      registerStart: data?['registerStart'],
+      registerEnd: data?['registerEnd'],
+      mockRoundStart: data?['mockRoundStart'],
+      mockRoundEnd: data?['mockRoundEnd'],
     );
   }
 

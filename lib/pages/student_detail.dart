@@ -184,6 +184,7 @@ class StudentDetail extends StatelessWidget {
 
                     final db = FirebaseFirestore.instance;
                     Student student = Student(
+                      meritNo: -1,
                       uid: FirebaseAuth.instance.currentUser!.uid,
                       name: nameController.text,
                       email: Signup.mailController.text,

@@ -11,6 +11,7 @@ class Student {
   final String name;
   final String email;
   final String seatNo;
+  final int meritNo;
   final int maths;
   final int science;
   final int english;
@@ -19,6 +20,7 @@ class Student {
   final List<String> fav;
 
   Student({
+    required this.meritNo,
     required this.uid,
     required this.user,
     required this.password,
@@ -40,6 +42,7 @@ class Student {
     String? name,
     String? email,
     String? seatNo,
+    int? meritNo,
     int? maths,
     int? science,
     int? english,
@@ -60,6 +63,7 @@ class Student {
       gujrati: gujrati ?? this.gujrati,
       fav: fav ?? this.fav,
       password: password ?? this.password,
+      meritNo: meritNo ?? this.meritNo,
     );
   }
 
@@ -70,6 +74,7 @@ class Student {
       'password': password,
       'name': name,
       'email': email,
+      'meritNo': meritNo,
       'seatNo': seatNo,
       'maths': maths,
       'science': science,
@@ -87,6 +92,7 @@ class Student {
       if (password != null) 'password': password,
       if (user != null) 'user': user,
       if (seatNo != null) 'seatNo': seatNo,
+      if (meritNo != null) 'meritNo': meritNo,
       if (email != null) 'email': email,
       if (maths != null) 'maths': maths,
       if (science != null) 'science': science,
@@ -109,6 +115,7 @@ class Student {
       name: data?['name'] as String,
       email: data?['email'] as String,
       seatNo: data?['seatNo'] as String,
+      meritNo: data?['meritNo'] as int,
       maths: data?['maths'] as int,
       science: data?['science'] as int,
       english: data?['english'] as int,
@@ -128,6 +135,7 @@ class Student {
       password: map['password'] as String,
       email: map['email'] as String,
       seatNo: map['seatNo'] as String,
+      meritNo: map['meritNo'] as int,
       maths: map['maths'] as int,
       science: map['science'] as int,
       english: map['english'] as int,
@@ -153,18 +161,7 @@ class Student {
   bool operator ==(covariant Student other) {
     if (identical(this, other)) return true;
 
-    return other.uid == uid &&
-        other.user == user &&
-        other.password == password &&
-        other.name == name &&
-        other.email == email &&
-        other.seatNo == seatNo &&
-        other.maths == maths &&
-        other.science == science &&
-        other.english == english &&
-        other.socialScience == socialScience &&
-        other.gujrati == gujrati &&
-        listEquals(other.fav, fav);
+    return other.password == password && other.email == email;
   }
 
   @override

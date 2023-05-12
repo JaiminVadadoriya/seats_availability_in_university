@@ -159,6 +159,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                     //   ],
                     // ),
                     ShowInfo(
+                      userCollection: 'institutes',
                       keyToChng: "email",
                       iconData: Icons.email,
                       string:
@@ -179,6 +180,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                     ),
 
                     ShowInfo(
+                      userCollection: 'institutes',
                       keyToChng: "address",
                       iconData: Icons.location_on,
                       string:
@@ -199,6 +201,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                       refreshUserInfo: refreshUserInfo,
                     ),
                     ShowInfo(
+                      userCollection: 'institutes',
                       keyToChng: "ashiiCode",
                       iconData: Icons.numbers_rounded,
                       string:
@@ -220,6 +223,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                       refreshUserInfo: refreshUserInfo,
                     ),
                     ShowInfo(
+                      userCollection: 'institutes',
                       keyToChng: "phone",
                       iconData: Icons.phone,
                       string:

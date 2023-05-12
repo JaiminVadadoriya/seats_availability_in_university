@@ -11,6 +11,7 @@ import '../pages/update_institute.dart';
 class ShowInfo extends StatelessWidget {
   final IconData iconData;
   final String string;
+  final String userCollection;
   final String keyToChng;
   final Function validator;
   final Function refreshUserInfo;
@@ -26,6 +27,7 @@ class ShowInfo extends StatelessWidget {
     required this.keyboardType,
     required this.keyToChng,
     required this.refreshUserInfo,
+    required this.userCollection,
   }) : super(key: key);
 
   TextEditingController nameController = TextEditingController();
@@ -89,10 +91,10 @@ class ShowInfo extends StatelessWidget {
                             var db = FirebaseFirestore.instance;
                             //update from collection
                             final usersRef =
-                                db.collection('institutes').doc(userId);
+                                db.collection(userCollection).doc(userId);
                             // .where("uid", isEqualTo: uid);
                             usersRef
-                                .update({"email": nameController.text}).then(
+                                .update({keyToChng: nameController.text}).then(
                                     (value) {
                               refreshUserInfo;
                               print("DocumentSnapshot successfully updated!");

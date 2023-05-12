@@ -21,6 +21,7 @@ import 'package:seats_availability_in_university/pages/priority.dart';
 import 'package:seats_availability_in_university/pages/profile.dart';
 import 'package:seats_availability_in_university/widgets/filter_drawer.dart';
 
+import '../main.dart';
 import '../models/institute.dart';
 import '../utils/globals.dart';
 import '../widgets/signout_drawer.dart';
@@ -28,12 +29,16 @@ import '../widgets/signout_drawer.dart';
 // import 'package:timezone/timezone.dart' as tz;
 // late Future<Rounds> rounds;
 late Map<String, dynamic> userData;
-late Rounds rounds = Rounds(
-  firstRoundStart: Timestamp.now(),
-  firstRoundEnd: Timestamp.now(),
-  secondRoundStart: Timestamp.now(),
-  secondRoundEnd: Timestamp.now(),
-);
+// late Rounds rounds = Rounds(
+//   firstRoundStart: Timestamp.now(),
+//   firstRoundEnd: Timestamp.now(),
+//   secondRoundStart: Timestamp.now(),
+//   secondRoundEnd: Timestamp.now(),
+//   registerStart: Timestamp.now(),
+//   registerEnd: Timestamp.now(),
+//   mockRoundStart: Timestamp.now(),
+//   mockRoundEnd: Timestamp.now(),
+// );
 
 late String userId = "";
 List<Branch> ownBranches = [];
@@ -115,38 +120,7 @@ class _HomeState extends State<Home> {
     _initInstituteData = _initInstitute();
     // _initRounds();
     _initUserInfo();
-    _initRounds();
     super.initState();
-  }
-
-  Future<void> _initRounds() async {
-    Rounds returnValue = Rounds(
-      firstRoundStart: Timestamp.now(),
-      firstRoundEnd: Timestamp.now(),
-      secondRoundStart: Timestamp.now(),
-      secondRoundEnd: Timestamp.now(),
-    );
-    print("phele - ${returnValue}");
-
-    await FirebaseFirestore.instance.collection('Admin').get().then(
-      (snapshot) {
-        for (var document in snapshot.docs) {
-          returnValue = Rounds.fromFirestore(document, SnapshotOptions());
-        }
-      }
-      //   (document) {
-      //     returnValue = Rounds.fromFirestore(document, SnapshotOptions());
-      //   },
-      ,
-      onError: (e) {
-        print(e);
-      },
-    );
-    setState(() {
-      rounds = returnValue;
-    });
-    print("badme - ${returnValue}");
-    // return returnValue;
   }
 
   Future<void> _initUserInfo() async {
