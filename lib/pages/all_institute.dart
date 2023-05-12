@@ -6,8 +6,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:seats_availability_in_university/models/rounds.dart';
+import 'package:seats_availability_in_university/models/student.dart';
 
 import 'package:seats_availability_in_university/pages/details_page.dart';
+import 'package:seats_availability_in_university/widgets/institue_card.dart';
 
 import '../main.dart';
 import '../models/institute.dart';
@@ -49,6 +51,8 @@ class AllInstitute extends StatefulWidget {
 
 class _AllInstituteState extends State<AllInstitute>
     with TickerProviderStateMixin {
+  Student _student = Student.fromMap(userData);
+
   String searchText = "";
   List<Institute> allbranchies = [];
   bool selectionIs = true;
@@ -82,6 +86,29 @@ class _AllInstituteState extends State<AllInstitute>
     }
   }
 
+  void addOrDel(Branch branch) {
+    final db = FirebaseFirestore.instance;
+    final studentRef = db.collection("students").doc(userId);
+    if (selectionIs) {
+      // Atomically add a new region to the "regions" array field.
+      studentRef.update({
+        "fav": FieldValue.arrayUnion([branch.bID]),
+      });
+      _student.fav.add(branch.bID);
+    } else {
+      // Atomically remove a region from the "regions" array field.
+      studentRef.update({
+        "fav": FieldValue.arrayRemove([branch.bID]),
+      });
+      _student.fav.remove(branch.bID);
+    }
+
+    print("prssed- ${_student.fav.contains(branch.bID)}");
+    setState(() {
+      selectionIs = !selectionIs;
+    });
+  }
+
   @override
   void initState() {
     // TODO: implement initState
@@ -106,84 +133,74 @@ class _AllInstituteState extends State<AllInstitute>
     List<Widget> branchWidget = [];
     // loop for showing branches in institute
     for (var i = 0; i < institute.branches.length; i++) {
+      List<String>.from(
+        userData['fav'],
+      ).contains(institute.branches);
       branchWidget.add(
-        Card(
-          child: ListTile(
-            title: Row(
-              children: [
-                Flexible(
-                  child: Text(
-                    "${institute.name} - ${institute.branches[i].branchName})",
-                    style: TextStyle(
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            subtitle: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                    "${institute.branches[i].totalSeats - institute.branches[i].filledSeats} Seats are available"),
-                Text("${institute.address} "),
-              ],
-            ),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) => DetailsPage(
-                          institute: institute,
-                        )),
-              );
-            },
-            trailing: rounds.roundOpen(Timestamp.now())
-                ? AnimatedRotation(
-                    turns: selectionIs ? 1 : .375,
-                    duration: const Duration(milliseconds: 750),
-                    curve: Curves.easeInBack,
-                    child: IconButton(
-                      icon: Icon(
-                        // selectionIs ? Icons.favorite :
-                        CupertinoIcons.add,
-                        color: selectionIs ? Colors.green : Colors.red,
-                      ),
-                      onPressed: () {
-                        // print(
-                        //     "display name - ${FirebaseAuth.instance.currentUser!.displayName}");
-                        // print(
-                        //     "display photoUrl - ${FirebaseAuth.instance.currentUser!.photoURL}");
-                        // print(
-                        //     "display email - ${FirebaseAuth.instance.currentUser!.email}");
-                        // print(
-                        //     "display uid - ${FirebaseAuth.instance.currentUser!.uid}");
-                        setState(() {
-                          selectionIs = !selectionIs;
-                          // institutes[index].isFav =
-                          //     institutes[index].isFav ? false : true;
-                        });
-                      },
-                    ),
-                    // selectionIs?Icon(
-                    // [index].isFav
-                    // ? Icons.favorite
-                    // :
-                    //   CupertinoIcons.add,
-                    //   color:
-                    //       // institutes[index].isFav ? Colors.pink :
-                    //       Colors.grey,
-                    // ),
-                  )
-                : null,
-            // AnimatedIcon(
-            //   icon: AnimatedIcons.event_add,
-            //   progress: controller,
-            //   size: 72.0,
-            // )
-            //
-          ),
-        ),
+        // Card(
+        //   child: ListTile(
+        //     title: Row(
+        //       children: [
+        //         Flexible(
+        //           child: Text(
+        //             "${institute.name} - ${institute.branches[i].branchName})",
+        //             style: TextStyle(
+        //               overflow: TextOverflow.ellipsis,
+        //             ),
+        //           ),
+        //         )
+        //       ],
+        //     ),
+        //     subtitle: Column(
+        //       crossAxisAlignment: CrossAxisAlignment.start,
+        //       children: [
+        //         Text(
+        //             "${institute.branches[i].totalSeats - institute.branches[i].filledSeats} Seats are available"),
+        //         Text("${institute.address} "),
+        //       ],
+        //     ),
+        //     onTap: () {
+        //       Navigator.push(
+        //         context,
+        //         MaterialPageRoute(
+        //             builder: (context) => DetailsPage(
+        //                   institute: institute,
+        //                 )),
+        //       );
+        //     },
+        //     trailing: rounds.roundOpen(Timestamp.now())
+        //         ? AnimatedRotation(
+        //             turns: selectionIs ? 1 : .375,
+        //             duration: const Duration(milliseconds: 750),
+        //             curve: Curves.easeInBack,
+        //             child: IconButton(
+        //               icon: Icon(
+        //                 // selectionIs ? Icons.favorite :
+        //                 CupertinoIcons.add,
+        //                 color: selectionIs ? Colors.green : Colors.red,
+        //               ),
+        //               onPressed: () => addOrDel(institute.branches[i]),
+        //             ),
+        //             // selectionIs?Icon(
+        //             // [index].isFav
+        //             // ? Icons.favorite
+        //             // :
+        //             //   CupertinoIcons.add,
+        //             //   color:
+        //             //       // institutes[index].isFav ? Colors.pink :
+        //             //       Colors.grey,
+        //             // ),
+        //           )
+        //         : null,
+        //     // AnimatedIcon(
+        //     //   icon: AnimatedIcons.event_add,
+        //     //   progress: controller,
+        //     //   size: 72.0,
+        //     // )
+        //     //
+        //   ),
+        // ),
+        InstituteCard(institute: institute, i: i),
       );
     }
     return branchWidget;

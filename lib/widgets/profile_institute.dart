@@ -440,6 +440,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                                 )),
                           ),
                         );
+                        setState(() {});
                       },
                       icon: Icon(CupertinoIcons.add_circled),
                       tooltip: "Add Branch",

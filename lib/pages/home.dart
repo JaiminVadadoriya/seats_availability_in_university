@@ -328,21 +328,28 @@ class _HomeState extends State<Home> {
     // https://firebase.google.com/docs/firestore/query-data/get-data
 //     // below line is used to get the
 
-    List<Widget> widgetOptions = <Widget>[
-      AllInstitute(
-        refreshInstitute: refreshInstitute,
-        rounds: rounds,
-      ),
-      FavInstitute(
-        refreshInstitute: refreshInstitute,
-      ),
-      Profile(),
-      // MapMun(
-      //     cameraTarget: cameraTarget,
-      //     dekhBinod: () => {
-      //           dekhBinod(),
-      //         }),
-    ];
+    List<Widget> widgetOptions = userData['user'] == "student"
+        ? <Widget>[
+            AllInstitute(
+              refreshInstitute: refreshInstitute,
+              rounds: rounds,
+            ),
+            FavInstitute(
+              refreshInstitute: refreshInstitute,
+            ),
+            Profile(),
+            // MapMun(
+            //     cameraTarget: cameraTarget,
+            //     dekhBinod: () => {
+            //           dekhBinod(),
+            //         }),
+          ]
+        : <Widget>[
+            FavInstitute(
+              refreshInstitute: refreshInstitute,
+            ),
+            Profile(),
+          ];
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       key: Globals.scaffoldKey,
@@ -505,21 +512,32 @@ class _HomeState extends State<Home> {
           tabBackgroundColor: Theme.of(context).focusColor,
           onTabChange: _onItemTapped,
           padding: EdgeInsets.all(10),
-          tabs: [
-            GButton(
-              // icon: CupertinoIcons.home,
-              icon: Icons.home_filled,
-              text: 'Home',
-            ),
-            GButton(
-              icon: Icons.info,
-              text: 'Information',
-            ),
-            GButton(
-              icon: Icons.account_circle,
-              text: 'Account',
-            ),
-          ],
+          tabs: userData['user'] == "student"
+              ? [
+                  GButton(
+                    // icon: CupertinoIcons.home,
+                    icon: Icons.home_filled,
+                    text: 'Home',
+                  ),
+                  GButton(
+                    icon: Icons.info,
+                    text: 'Information',
+                  ),
+                  GButton(
+                    icon: Icons.account_circle,
+                    text: 'Account',
+                  ),
+                ]
+              : [
+                  GButton(
+                    icon: Icons.info,
+                    text: 'Information',
+                  ),
+                  GButton(
+                    icon: Icons.account_circle,
+                    text: 'Account',
+                  ),
+                ],
         ),
       ),
     );

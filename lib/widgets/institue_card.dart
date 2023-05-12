@@ -1,0 +1,167 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:seats_availability_in_university/models/institute.dart';
+
+import '../main.dart';
+import '../models/student.dart';
+import '../pages/details_page.dart';
+import '../pages/home.dart';
+
+class InstituteCard extends StatefulWidget {
+  const InstituteCard({super.key, required this.institute, required this.i});
+  final Institute institute;
+  final int i;
+
+  @override
+  State<InstituteCard> createState() => _InstituteCardState();
+}
+
+class _InstituteCardState extends State<InstituteCard> {
+  bool selectionIs = false;
+
+  // Student _student = Student.fromMap(userData);
+  Future<void> refreshUserInfo() async {
+    final db = FirebaseFirestore.instance;
+    final usersRef = db.collection('institutes').doc(userId);
+    final docSnapshot = await usersRef.get();
+    setState(() {
+      if (docSnapshot.exists) {
+        final data = docSnapshot.data();
+        if (data != null) {
+          print("pressed -  ${selectionIs}");
+          var student = Student.fromMap(data);
+          setState(() {
+            selectionIs =
+                student.fav.contains(widget.institute.branches[widget.i].bID);
+            print("pressed -  ${selectionIs}");
+          });
+        }
+        // Student _student =
+        //     Student.fromMap(docSnapshot.data() as Map<String, dynamic>);
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    refreshUserInfo();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    //
+
+    return Card(
+      child: ListTile(
+        title: Row(
+          children: [
+            Flexible(
+              child: Text(
+                "${widget.institute.name} - ${widget.institute.branches[widget.i].branchName})",
+                style: TextStyle(
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
+            )
+          ],
+        ),
+        subtitle: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+                "${widget.institute.branches[widget.i].totalSeats - widget.institute.branches[widget.i].filledSeats} Seats are available"),
+            Text("${widget.institute.address} "),
+          ],
+        ),
+        onTap: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => DetailsPage(
+                      institute: widget.institute,
+                    )),
+          );
+        },
+        trailing: rounds.roundOpen(Timestamp.now())
+            ? AnimatedRotation(
+                turns: selectionIs ? 0.375 : 1,
+                duration: const Duration(milliseconds: 750),
+                curve: Curves.easeInBack,
+                child: IconButton(
+                  icon: Icon(
+                    // selectionIs ? Icons.favorite :
+                    CupertinoIcons.add,
+                    color: selectionIs ? Colors.red : Colors.green,
+                  ),
+                  onPressed: () {
+                    setState(() {
+                      selectionIs = !selectionIs;
+                    });
+                    final db = FirebaseFirestore.instance;
+                    final studentRef = db.collection("students").doc(userId);
+                    if (selectionIs) {
+                      // Atomically add a new region to the "regions" array field.
+                      studentRef.update({
+                        "fav": FieldValue.arrayUnion(
+                            [widget.institute.branches[widget.i].bID]),
+                      });
+
+                      // _student.fav.add(widget.institute.branches[widget.i].bID);
+                    } else {
+                      // Atomically remove a region from the "regions" array field.
+                      studentRef.update({
+                        "fav": FieldValue.arrayRemove(
+                            [widget.institute.branches[widget.i].bID]),
+                      });
+                      // _student.fav
+                      //     .remove(widget.institute.branches[widget.i].bID);
+                    }
+                    refreshUserInfo();
+                    // print(
+                    //     "prssed- ${_student.fav.contains(widget.institute.branches[widget.i].bID)}");
+                    // userData = _student.toMap();
+                    // if (!selectionIs) {
+                    //   // Atomically add a new region to the "regions" array field.
+                    // studentRef.update({
+                    //   "fav": FieldValue.arrayUnion(
+                    //       [widget.institute.branches[widget.i].bID]),
+                    // });
+                    // } else {
+                    //   // Atomically remove a region from the "regions" array field.
+                    //   studentRef.update({
+                    //     "fav": FieldValue.arrayRemove(
+                    //         [widget.institute.branches[widget.i].bID]),
+                    //   });
+                    // }
+
+                    // setState(() {
+                    //   selectionIs = !selectionIs;
+                    // });
+                  },
+                ),
+                // selectionIs?Icon(
+                // [index].isFav
+                // ? Icons.favorite
+                // :
+                //   CupertinoIcons.add,
+                //   color:
+                //       // institutes[index].isFav ? Colors.pink :
+                //       Colors.grey,
+                // ),
+              )
+            : null,
+        // AnimatedIcon(
+        //   icon: AnimatedIcons.event_add,
+        //   progress: controller,
+        //   size: 72.0,
+        // )
+        //
+      ),
+    );
+  }
+}
