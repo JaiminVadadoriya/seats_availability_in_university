@@ -18,6 +18,9 @@ class Student {
   final int socialScience;
   final int gujrati;
   final List<String> fav;
+  final bool isSeatConf;
+  final String confbranch;
+  final String confinstitute;
 
   Student({
     required this.meritNo,
@@ -33,6 +36,9 @@ class Student {
     required this.socialScience,
     required this.gujrati,
     required this.fav,
+    required this.isSeatConf,
+    required this.confbranch,
+    required this.confinstitute,
   });
 
   Student copyWith({
@@ -49,6 +55,9 @@ class Student {
     int? socialScience,
     int? gujrati,
     List<String>? fav,
+    bool? isSeatConf,
+    String? confbranch,
+    String? confinstitute,
   }) {
     return Student(
       uid: uid ?? this.uid,
@@ -64,6 +73,9 @@ class Student {
       fav: fav ?? this.fav,
       password: password ?? this.password,
       meritNo: meritNo ?? this.meritNo,
+      isSeatConf: isSeatConf ?? this.isSeatConf,
+      confbranch: confbranch ?? this.confbranch,
+      confinstitute: confinstitute?? this.confinstitute,
     );
   }
 
@@ -82,6 +94,9 @@ class Student {
       'socialScience': socialScience,
       'gujrati': gujrati,
       'fav': fav,
+      'isSeatConf': isSeatConf,
+      'confbranch': confbranch,
+      'confinstitute': confinstitute,
     };
   }
 
@@ -100,6 +115,9 @@ class Student {
       if (socialScience != null) 'socialScience': socialScience,
       if (gujrati != null) 'gujrati': gujrati,
       if (fav != null) 'fav': fav,
+      if (isSeatConf != null) 'isSeatConf': isSeatConf,
+      if (confbranch != null) 'confbranch': confbranch,
+      if (confinstitute != null) 'confinstitute': confinstitute,
     };
   }
 
@@ -124,6 +142,9 @@ class Student {
       fav: List<String>.from(
         (data?['fav']),
       ),
+      isSeatConf: data?['isSeatConf'] as bool,
+      confbranch: data?['confbranch'] as String,
+      confinstitute: data?['confinstitute'] as String,
     );
   }
 
@@ -144,6 +165,10 @@ class Student {
       fav: List<String>.from(
         (map['fav']),
       ),
+      isSeatConf: map['isSeatConf'] as bool,
+      confbranch: map['confbranch'] as String,
+      confinstitute: map['confinstitute'] as String,
+
     );
   }
 
@@ -154,7 +179,7 @@ class Student {
 
   @override
   String toString() {
-    return 'Student(name: $name, email: $email, maths: $maths, science: $science, english: $english, socialScience: $socialScience, gujrati: $gujrati, fav: $fav)';
+    return 'Student(name: $name, email: $email, maths: $maths, science: $science, english: $english, socialScience: $socialScience, gujrati: $gujrati, fav: $fav, isSeatConf: $isSeatConf, confbranch: $confbranch, confinstitute: $confinstitute)';
   }
 
   @override
@@ -177,6 +202,9 @@ class Student {
         english.hashCode ^
         socialScience.hashCode ^
         gujrati.hashCode ^
-        fav.hashCode;
+        fav.hashCode ^
+        isSeatConf.hashCode^
+        confbranch.hashCode^
+        confinstitute.hashCode;
   }
 }

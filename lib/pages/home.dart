@@ -17,6 +17,7 @@ import 'package:seats_availability_in_university/models/rounds.dart';
 import 'package:seats_availability_in_university/models/student.dart';
 import 'package:seats_availability_in_university/pages/all_institute.dart';
 import 'package:seats_availability_in_university/pages/fav_institute.dart';
+import 'package:seats_availability_in_university/pages/messaging.dart';
 import 'package:seats_availability_in_university/pages/priority.dart';
 import 'package:seats_availability_in_university/pages/profile.dart';
 import 'package:seats_availability_in_university/widgets/filter_drawer.dart';
@@ -24,6 +25,7 @@ import 'package:seats_availability_in_university/widgets/filter_drawer.dart';
 import '../main.dart';
 import '../models/institute.dart';
 import '../utils/globals.dart';
+import '../widgets/merit.dart';
 import '../widgets/signout_drawer.dart';
 
 // import 'package:timezone/timezone.dart' as tz;
@@ -124,11 +126,11 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> _initUserInfo() async {
-    String? _uid = FirebaseAuth.instance.currentUser?.uid;
+    String? _emailid = FirebaseAuth.instance.currentUser?.email;
 
     final db = FirebaseFirestore.instance;
-    final usersRef = db.collection('institutes').where("uid", isEqualTo: _uid);
-    print("exist - ${_uid}");
+    final usersRef = db.collection('institutes').where("loginemail", isEqualTo: _emailid);
+  //  print("exist - ${_uid}");
     Query<Map<String, dynamic>> studentRef;
     Map<String, dynamic> userDataFun = {};
 
@@ -173,7 +175,7 @@ class _HomeState extends State<Home> {
             else
               {
                 studentRef =
-                    db.collection('students').where("uid", isEqualTo: _uid),
+                    db.collection('students').where("email", isEqualTo: _emailid),
                 studentRef.get().then(
                   (docSnapshot) {
                     if (docSnapshot.docs.isNotEmpty) {
@@ -288,8 +290,11 @@ class _HomeState extends State<Home> {
   }
 
   Future<void> refreshInstitute() async {
+    
     // List<String> documentIds = [];
     branchesInstitutes = [];
+    //vaidik
+    
     await FirebaseFirestore.instance.collection('institutes').get().then(
           (snapshot) => snapshot.docs.forEach(
             (document) {
@@ -320,6 +325,7 @@ class _HomeState extends State<Home> {
             },
           ),
         );
+        // vaidik end
     setState(() {});
   }
 
@@ -327,16 +333,20 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     // https://firebase.google.com/docs/firestore/query-data/get-data
 //     // below line is used to get the
-
+    
     List<Widget> widgetOptions = userData['user'] == "student"
         ? <Widget>[
+          //vaidik
+         
             AllInstitute(
               refreshInstitute: refreshInstitute,
               rounds: rounds,
             ),
-            FavInstitute(
-              refreshInstitute: refreshInstitute,
-            ),
+            //vaidik end
+            // FavInstitute(
+            //   refreshInstitute: refreshInstitute,
+            // ),
+            Message_Page(),
             Profile(),
             // MapMun(
             //     cameraTarget: cameraTarget,
@@ -345,9 +355,11 @@ class _HomeState extends State<Home> {
             //         }),
           ]
         : <Widget>[
-            FavInstitute(
-              refreshInstitute: refreshInstitute,
-            ),
+           Message_Page(),
+
+            // FavInstitute(
+            //   refreshInstitute: refreshInstitute,
+            // ),
             Profile(),
           ];
     return Scaffold(
@@ -371,7 +383,10 @@ class _HomeState extends State<Home> {
       //
 
       floatingActionButton: _selectedIndex == 0
-          ? Container(
+          ? 
+           rounds.roundOpen(Timestamp.now()) || rounds.mockRoundOpen(Timestamp.now())?
+          Container(
+            
               margin: EdgeInsets.symmetric(horizontal: 100),
               child: FloatingActionButton.extended(
                 onPressed: () async {
@@ -403,7 +418,7 @@ class _HomeState extends State<Home> {
                 label: const Text('added collages'),
                 icon: const Icon(Icons.add),
               ),
-            )
+            ):Container()
           : null,
       //
       // ---> below we provide appbar logic

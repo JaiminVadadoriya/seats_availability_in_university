@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:seats_availability_in_university/main.dart';
 
 import '../pages/home.dart';
 import '../pages/update_institute.dart';
@@ -17,6 +18,7 @@ class ShowInfo extends StatelessWidget {
   final Function refreshUserInfo;
   final InputDecoration decoration;
   final TextInputType keyboardType;
+  final bool isInt;
 
   ShowInfo({
     Key? key,
@@ -28,6 +30,7 @@ class ShowInfo extends StatelessWidget {
     required this.keyToChng,
     required this.refreshUserInfo,
     required this.userCollection,
+    required this.isInt,
   }) : super(key: key);
 
   TextEditingController nameController = TextEditingController();
@@ -64,67 +67,72 @@ class ShowInfo extends StatelessWidget {
                   ),
                 ),
               ),
-              IconButton(
-                onPressed: () => showDialog(
-                  context: context,
-                  builder: (BuildContext context) => AlertDialog(
-                    title: const Text('Update'),
-                    content: Form(
-                      key: _formKey,
-                      child: TextFormField(
-                        controller: nameController,
-                        validator: (value) => validator(value),
-                        decoration: decoration,
-                        keyboardType: keyboardType,
+              rounds.registerOpen(Timestamp.now())
+                  ? IconButton(
+                      onPressed: () => showDialog(
+                        context: context,
+                        builder: (BuildContext context) => AlertDialog(
+                          title: const Text('Update'),
+                          content: Form(
+                            key: _formKey,
+                            child: TextFormField(
+                              controller: nameController,
+                              validator: (value) => validator(value),
+                              decoration: decoration,
+                              keyboardType: keyboardType,
+                            ),
+                          ),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () => {
+                                Navigator.pop(context),
+                              },
+                              child: const Text('Cancel'),
+                            ),
+                            TextButton(
+                              onPressed: () {
+                                if (_formKey.currentState!.validate()) {
+                                  var db = FirebaseFirestore.instance;
+                                  //update from collection
+                                  var updateValute = isInt == true
+                                      ? int.parse(nameController.text)
+                                      : nameController.text;
+                                  final usersRef =
+                                      db.collection(userCollection).doc(userId);
+                                  // .where("uid", isEqualTo: uid);
+                                  usersRef.update(
+                                      {keyToChng: updateValute}).then((value) {
+                                    refreshUserInfo;
+                                    print(
+                                        "DocumentSnapshot successfully updated!");
+                                  },
+                                      onError: (e) =>
+                                          print("Error updating document $e"));
+                                  //pop from dialog
+                                  Navigator.pop(context);
+                                }
+                              },
+                              child: const Text('OK'),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    actions: <Widget>[
-                      TextButton(
-                        onPressed: () => {
-                          Navigator.pop(context),
-                        },
-                        child: const Text('Cancel'),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            var db = FirebaseFirestore.instance;
-                            //update from collection
-                            final usersRef =
-                                db.collection(userCollection).doc(userId);
-                            // .where("uid", isEqualTo: uid);
-                            usersRef
-                                .update({keyToChng: nameController.text}).then(
-                                    (value) {
-                              refreshUserInfo;
-                              print("DocumentSnapshot successfully updated!");
-                            },
-                                    onError: (e) =>
-                                        print("Error updating document $e"));
-                            //pop from dialog
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: const Text('OK'),
-                      ),
-                    ],
-                  ),
-                ),
-                // onPressed: () {
-                //   // on edit button pressed
-                //   Navigator.push(
-                //     context,
-                //     MaterialPageRoute(
-                //       builder: ((context) => UpdateInstitute(
-                //             validator: validator,
-                //             keyboardType: keyboardType,
-                //             decoration: decoration,
-                //           )),
-                //     ),
-                //   );
-                // },
-                icon: Icon(CupertinoIcons.pen),
-              )
+                      // onPressed: () {
+                      //   // on edit button pressed
+                      //   Navigator.push(
+                      //     context,
+                      //     MaterialPageRoute(
+                      //       builder: ((context) => UpdateInstitute(
+                      //             validator: validator,
+                      //             keyboardType: keyboardType,
+                      //             decoration: decoration,
+                      //           )),
+                      //     ),
+                      //   );
+                      // },
+                      icon: Icon(CupertinoIcons.pen),
+                    )
+                  : Container(),
             ],
           ),
         ),

@@ -220,6 +220,9 @@ class InstituteDetail extends StatelessWidget {
                         .then((value) {
                       print(value.id);
                       db
+                            .collection("institutes")
+                            .doc(value.id).update({"uid": value.id},);
+                      db
                           .collection("institutes")
                           .doc(value.id)
                           .collection("branch")

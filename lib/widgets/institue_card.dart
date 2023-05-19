@@ -21,7 +21,7 @@ class InstituteCard extends StatefulWidget {
 
 class _InstituteCardState extends State<InstituteCard> {
   bool selectionIs = false;
-
+  Student student = Student.fromMap(userData);
   // Student _student = Student.fromMap(userData);
   Future<void> refreshUserInfo() async {
     final db = FirebaseFirestore.instance;
@@ -32,12 +32,13 @@ class _InstituteCardState extends State<InstituteCard> {
         final data = docSnapshot.data();
         if (data != null) {
           print("pressed -  ${selectionIs}");
-          var student = Student.fromMap(data);
+          student = Student.fromMap(data);
           setState(() {
             selectionIs =
                 student.fav.contains(widget.institute.branches[widget.i].bID);
             print("pressed -  ${selectionIs}");
           });
+          userData = data;
         }
         // Student _student =
         //     Student.fromMap(docSnapshot.data() as Map<String, dynamic>);
@@ -50,12 +51,37 @@ class _InstituteCardState extends State<InstituteCard> {
     // TODO: implement initState
     super.initState();
     refreshUserInfo();
+    student = Student.fromMap(userData);
+    selectionIs = student.fav.contains(widget.institute.branches[widget.i].bID);
   }
 
+  double calculatePossibility(
+      int totalSeats, int maxMerit, int studentMeritNumber) {
+    if (studentMeritNumber <= maxMerit) //5 <= 6
+    {
+      double possibility = ((maxMerit - studentMeritNumber) / maxMerit) *
+          (totalSeats.toDouble() / totalSeats);
+      return possibility * 100;
+    } else {
+      return 0;
+    }
+  }
+
+  final students = Student.fromMap(userData);
+  //   studentDocs.docs.map((doc) => Student.fromMap(doc.data())).toList();
   @override
   Widget build(BuildContext context) {
-    //
+    int leftSeats = widget.institute.branches[widget.i].totalSeats -
+        widget.institute.branches[widget.i].filledSeats;
+    int totalStu = students.meritNo;
 
+    // (titul sea * fillseat)100//20
+
+    int minMerit = widget.institute.branches[widget.i].minMarks; //3
+    double percentage =
+        (students.meritNo * 100) / minMerit; //2*100 = 200/3 = 33.
+    double result = calculatePossibility(
+        widget.institute.branches[widget.i].totalSeats, minMerit, totalStu);
     return Card(
       child: ListTile(
         title: Row(
@@ -75,6 +101,7 @@ class _InstituteCardState extends State<InstituteCard> {
           children: [
             Text(
                 "${widget.institute.branches[widget.i].totalSeats - widget.institute.branches[widget.i].filledSeats} Seats are available"),
+            Text("You have ${result} chances."),
             Text("${widget.institute.address} "),
           ],
         ),

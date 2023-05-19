@@ -9,6 +9,7 @@ import 'package:seats_availability_in_university/pages/home.dart';
 import 'package:seats_availability_in_university/utils/google_sign_in_provider.dart';
 
 import '../../utils/routes.dart';
+import '../../widgets/merit.dart';
 
 class Login extends StatefulWidget {
   static const String _title = 'Login';
@@ -28,6 +29,7 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       appBar: AppBar(title: const Text(Login._title)),
       body: SingleChildScrollView(

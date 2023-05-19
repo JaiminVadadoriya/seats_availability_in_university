@@ -159,6 +159,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                     //   ],
                     // ),
                     ShowInfo(
+                      isInt: false,
                       userCollection: 'institutes',
                       keyToChng: "email",
                       iconData: Icons.email,
@@ -180,6 +181,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                     ),
 
                     ShowInfo(
+                      isInt: false,
                       userCollection: 'institutes',
                       keyToChng: "address",
                       iconData: Icons.location_on,
@@ -201,6 +203,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                       refreshUserInfo: refreshUserInfo,
                     ),
                     ShowInfo(
+                      isInt: true,
                       userCollection: 'institutes',
                       keyToChng: "ashiiCode",
                       iconData: Icons.numbers_rounded,
@@ -223,6 +226,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                       refreshUserInfo: refreshUserInfo,
                     ),
                     ShowInfo(
+                      isInt: false,
                       userCollection: 'institutes',
                       keyToChng: "phone",
                       iconData: Icons.phone,
@@ -420,7 +424,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                             ],
                           ),
 
-                          // ShowInfo(
+                          // ShowInfo( isInt: false,
                           //   iconData: Icons.chair_alt,
                           //   string:
                           //       "${branch.filledSeats.toString().toUpperCase()} / ${branch.totalSeats.toString().toUpperCase()}",
@@ -450,7 +454,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
 
                     // child: Column(
                     //   children: [
-                    //     ShowInfo(
+                    //     ShowInfo( isInt: false,
                     //       iconData: Icons.chair_alt,
                     //       string:
                     //           "${_branch.filledSeats.toString().toUpperCase()} / ${_branch.totalSeats.toString().toUpperCase()}",
@@ -465,7 +469,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                     //   itemCount: branchInstitute.branches.length,
                     // )
 
-                    // ShowInfo(
+                    // ShowInfo( isInt: false,
                     //   iconData: Icons.location_on,
                     //   string:
                     //       "${branchInstitute.branch.toString().toUpperCase()}",

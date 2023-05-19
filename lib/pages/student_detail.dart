@@ -197,8 +197,15 @@ class StudentDetail extends StatelessWidget {
                       user: "student",
                       password: Signup.passwordController.text,
                       fav: [],
+                      isSeatConf: false,
+                      confbranch: "",
+                      confinstitute: "",
                     );
-                    db.collection("students").add(student.toFirestore());
+                    db.collection("students").add(student.toFirestore()).then(
+                        (value) => db
+                            .collection("students")
+                            .doc(value.id)
+                            .update({"uid": value.id}));
                     // db.collection("students").add({
                     //   "r_email": Signup.mailController.text,
                     //   "r_password": Signup.passwordController.text,

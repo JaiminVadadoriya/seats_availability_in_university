@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:seats_availability_in_university/models/student.dart';
 import 'package:seats_availability_in_university/widgets/show_info.dart';
 
+import '../main.dart';
 import '../pages/home.dart';
+import '../utils/conform_seat.dart';
+import 'merit.dart';
 
 class ProfileStudent extends StatefulWidget {
   @override
@@ -25,6 +28,10 @@ class _ProfileStudentState extends State<ProfileStudent> {
 
   @override
   Widget build(BuildContext context) {
+    // conformInstitute();
+
+    // conformInstitute();
+    // generateMeritList();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Column(
@@ -83,6 +90,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         height: 20,
                       ),
                       ShowInfo(
+                        isInt: true,
                         userCollection: 'students',
                         keyToChng: "seatNo",
                         iconData: Icons.chair_alt,
@@ -102,6 +110,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         refreshUserInfo: refreshUserInfo,
                       ),
                       ShowInfo(
+                        isInt: true,
                         userCollection: 'students',
                         keyToChng: "maths",
                         iconData: Icons.numbers_rounded,
@@ -127,6 +136,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         refreshUserInfo: refreshUserInfo,
                       ),
                       ShowInfo(
+                        isInt: true,
                         userCollection: 'students',
                         keyToChng: "science",
                         iconData: Icons.numbers_rounded,
@@ -151,6 +161,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         refreshUserInfo: refreshUserInfo,
                       ),
                       ShowInfo(
+                        isInt: true,
                         userCollection: 'students',
                         keyToChng: "english",
                         iconData: Icons.numbers_rounded,
@@ -175,6 +186,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         refreshUserInfo: refreshUserInfo,
                       ),
                       ShowInfo(
+                        isInt: true,
                         userCollection: 'students',
                         keyToChng: "socialScience",
                         iconData: Icons.numbers_rounded,
@@ -199,6 +211,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         refreshUserInfo: refreshUserInfo,
                       ),
                       ShowInfo(
+                        isInt: true,
                         userCollection: 'students',
                         keyToChng: "gujrati",
                         iconData: Icons.numbers_rounded,
@@ -222,6 +235,63 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         keyboardType: TextInputType.number,
                         refreshUserInfo: refreshUserInfo,
                       ),
+                      rounds.mockroundEnds(Timestamp.now())
+                          ? Container(
+                              child: Column(children: [
+                              // String namesinst = conformInstitute();
+                              // Text(conformInstitute() as String),
+                              // SizedBox(
+                              //    height: 5,
+                              //       ),
+                            ]))
+                          : Container(),
+                      rounds.roundEnds(Timestamp.now())
+                          ? Container(
+                              child: Column(
+                                children: [
+                                  Text("conform you seat in "),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      Future<bool> conform = conformSeat();
+                                      //  bool checkConf=await conform as bool;
+                                      //  print(checkConf);
+
+                                      //if(!checkConf){
+
+                                      //    print("ho raha he");
+                                      Text(
+                                          "You have successfully confirmed your institute branch ${student.confbranch.toString()}");
+                                      // }
+                                    },
+                                    child: Text("conform"),
+                                  ),
+                                  SizedBox(
+                                    height: 5,
+                                  ),
+                                  ElevatedButton(
+                                    onPressed: () async {
+                                      //Future<bool> conform= conformInstitute();
+                                      //   if(await conform){
+                                      //   final db = FirebaseFirestore.instance;
+                                      //  db
+                                      //    .collection("students")
+                                      //          .doc(student.uid)
+                                      //      .update({
+                                      //        "isSeatConf": context
+                                      //       });
+                                      Text(
+                                          "You have cencel your confirmed  institute ");
+                                      // }
+                                    },
+                                    child: Text("cencel"),
+                                  ),
+                                ],
+                              ),
+                            )
+                          : Container(),
                     ],
                   ),
                 ),

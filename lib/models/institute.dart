@@ -194,9 +194,9 @@ class Institute {
 }
 
 class Branch {
-  final int minMarks; //
+  int minMarks; //
   final int totalSeats; //
-  final int filledSeats; //
+  int filledSeats; //
   bool isFav = false; //
   final String branchName;
   final String bID;
