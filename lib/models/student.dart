@@ -75,7 +75,7 @@ class Student {
       meritNo: meritNo ?? this.meritNo,
       isSeatConf: isSeatConf ?? this.isSeatConf,
       confbranch: confbranch ?? this.confbranch,
-      confinstitute: confinstitute?? this.confinstitute,
+      confinstitute: confinstitute ?? this.confinstitute,
     );
   }
 
@@ -168,7 +168,6 @@ class Student {
       isSeatConf: map['isSeatConf'] as bool,
       confbranch: map['confbranch'] as String,
       confinstitute: map['confinstitute'] as String,
-
     );
   }
 
@@ -203,8 +202,8 @@ class Student {
         socialScience.hashCode ^
         gujrati.hashCode ^
         fav.hashCode ^
-        isSeatConf.hashCode^
-        confbranch.hashCode^
+        isSeatConf.hashCode ^
+        confbranch.hashCode ^
         confinstitute.hashCode;
   }
 }

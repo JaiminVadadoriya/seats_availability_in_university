@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:seats_availability_in_university/models/student.dart';
 import 'package:seats_availability_in_university/widgets/show_info.dart';
 
 import '../main.dart';
+import '../pages/front_page.dart';
 import '../pages/home.dart';
 import '../utils/conform_seat.dart';
 import 'merit.dart';
@@ -15,15 +15,24 @@ class ProfileStudent extends StatefulWidget {
 
 class _ProfileStudentState extends State<ProfileStudent> {
   // const ProfileStudent({super.key});
-  Student student = Student.fromMap(userData);
+  // Student student = userData[" "]fromMap(userData);
 
   Future<void> refreshUserInfo() async {
     final db = FirebaseFirestore.instance;
-    final usersRef = db.collection('institutes').doc(userId);
-    final docSnapshot = await usersRef.get();
-    setState(() {
-      userData = docSnapshot.data()!;
+    final usersRef = db.collection('students').doc(userId);
+    usersRef.get().then((value) {
+      setState(() {
+        userData = value.data()!;
+        // student = userData[" "]fromMap(userData);
+      });
     });
+  }
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    refreshUserInfo();
   }
 
   @override
@@ -52,19 +61,19 @@ class _ProfileStudentState extends State<ProfileStudent> {
             ),
           ),
           Text(
-            "${student.name}",
+            "${userData["name"]}",
             style: TextStyle(fontSize: 29),
           ),
           SizedBox(
             height: 10,
           ),
-          student.meritNo < 0
+          userData["meritNo"] < 0
               ? Text(
                   "Merit no doesn't assign",
                   style: TextStyle(fontSize: 20),
                 )
               : Text(
-                  "${student.meritNo}",
+                  "${userData["meritNo"]}",
                   style: TextStyle(fontSize: 23),
                 ),
           SizedBox(
@@ -94,7 +103,8 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         userCollection: 'students',
                         keyToChng: "seatNo",
                         iconData: Icons.chair_alt,
-                        string: "${student.seatNo.toString().toUpperCase()}",
+                        string:
+                            "${userData["seatNo"].toString().toUpperCase()}",
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Seat Number can't be empty";
@@ -115,7 +125,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         keyToChng: "maths",
                         iconData: Icons.numbers_rounded,
                         string:
-                            "Maths - ${student.maths.toString().toUpperCase()}",
+                            "Maths - ${userData["maths"].toString().toUpperCase()}",
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Number can't be empty";
@@ -141,7 +151,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         keyToChng: "science",
                         iconData: Icons.numbers_rounded,
                         string:
-                            "Science - ${student.science.toString().toUpperCase()}",
+                            "Science - ${userData["science"].toString().toUpperCase()}",
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Number can't be empty";
@@ -166,7 +176,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         keyToChng: "english",
                         iconData: Icons.numbers_rounded,
                         string:
-                            "English - ${student.english.toString().toUpperCase()}",
+                            "English - ${userData["english"].toString().toUpperCase()}",
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Number can't be empty";
@@ -191,7 +201,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         keyToChng: "socialScience",
                         iconData: Icons.numbers_rounded,
                         string:
-                            "SocialScience - ${student.socialScience.toString().toUpperCase()}",
+                            "SocialScience - ${userData["socialScience"].toString().toUpperCase()}",
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Number can't be empty";
@@ -216,7 +226,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         keyToChng: "gujrati",
                         iconData: Icons.numbers_rounded,
                         string:
-                            "Gujarati - ${student.gujrati.toString().toUpperCase()}",
+                            "Gujarati - ${userData["gujrati"].toString().toUpperCase()}",
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Number can't be empty";
@@ -263,7 +273,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
 
                                       //    print("ho raha he");
                                       Text(
-                                          "You have successfully confirmed your institute branch ${student.confbranch.toString()}");
+                                          "You have successfully confirmed your institute branch ${userData["confbranch"].toString()}");
                                       // }
                                     },
                                     child: Text("conform"),
@@ -278,7 +288,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                                       //   final db = FirebaseFirestore.instance;
                                       //  db
                                       //    .collection("students")
-                                      //          .doc(student.uid)
+                                      //          .doc(userData[" "]uid)
                                       //      .update({
                                       //        "isSeatConf": context
                                       //       });

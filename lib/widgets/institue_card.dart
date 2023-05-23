@@ -8,6 +8,7 @@ import 'package:seats_availability_in_university/models/institute.dart';
 import '../main.dart';
 import '../models/student.dart';
 import '../pages/details_page.dart';
+import '../pages/front_page.dart';
 import '../pages/home.dart';
 
 class InstituteCard extends StatefulWidget {
@@ -34,8 +35,8 @@ class _InstituteCardState extends State<InstituteCard> {
           print("pressed -  ${selectionIs}");
           student = Student.fromMap(data);
           setState(() {
-            selectionIs =
-                student.fav.contains(widget.institute.branches[widget.i].bID);
+            selectionIs = student.fav.contains(
+                "${widget.institute.uid}/branch/${widget.institute.branches[widget.i].bID}");
             print("pressed -  ${selectionIs}");
           });
           userData = data;
@@ -52,7 +53,8 @@ class _InstituteCardState extends State<InstituteCard> {
     super.initState();
     refreshUserInfo();
     student = Student.fromMap(userData);
-    selectionIs = student.fav.contains(widget.institute.branches[widget.i].bID);
+    selectionIs = student.fav.contains(
+        "${widget.institute.uid}/branch/${widget.institute.branches[widget.i].bID}");
   }
 
   double calculatePossibility(
@@ -134,21 +136,23 @@ class _InstituteCardState extends State<InstituteCard> {
                     if (selectionIs) {
                       // Atomically add a new region to the "regions" array field.
                       studentRef.update({
-                        "fav": FieldValue.arrayUnion(
-                            [widget.institute.branches[widget.i].bID]),
+                        "fav": FieldValue.arrayUnion([
+                          "${widget.institute.uid}/branch/${widget.institute.branches[widget.i].bID}"
+                        ]),
                       });
 
                       // _student.fav.add(widget.institute.branches[widget.i].bID);
                     } else {
                       // Atomically remove a region from the "regions" array field.
                       studentRef.update({
-                        "fav": FieldValue.arrayRemove(
-                            [widget.institute.branches[widget.i].bID]),
+                        "fav": FieldValue.arrayRemove([
+                          "${widget.institute.uid}/branch/${widget.institute.branches[widget.i].bID}"
+                        ]),
                       });
                       // _student.fav
                       //     .remove(widget.institute.branches[widget.i].bID);
                     }
-                    refreshUserInfo();
+                    // refreshUserInfo();
                     // print(
                     //     "prssed- ${_student.fav.contains(widget.institute.branches[widget.i].bID)}");
                     // userData = _student.toMap();

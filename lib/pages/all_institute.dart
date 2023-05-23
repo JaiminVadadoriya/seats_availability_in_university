@@ -15,6 +15,7 @@ import '../main.dart';
 import '../models/institute.dart';
 import '../utils/globals.dart';
 import '../utils/routes.dart';
+import 'front_page.dart';
 import 'home.dart';
 
 // class AnimatedLogo extends AnimatedWidget {
@@ -54,7 +55,6 @@ class _AllInstituteState extends State<AllInstitute>
   Student _student = Student.fromMap(userData);
 
   String searchText = "";
-  List<Institute> allbranchies = [];
   bool selectionIs = true;
   var _controller = TextEditingController();
   //late
@@ -80,34 +80,36 @@ class _AllInstituteState extends State<AllInstitute>
         }).toList();
       });
     } else {
-      setState(() {
-        allbranchies = branchesInstitutes;
+      widget.refreshInstitute().then((value) {
+        setState(() {
+          allbranchies = branchesInstitutes;
+        });
       });
     }
   }
 
-  void addOrDel(Branch branch) {
-    final db = FirebaseFirestore.instance;
-    final studentRef = db.collection("students").doc(userId);
-    if (selectionIs) {
-      // Atomically add a new region to the "regions" array field.
-      studentRef.update({
-        "fav": FieldValue.arrayUnion([branch.bID]),
-      });
-      _student.fav.add(branch.bID);
-    } else {
-      // Atomically remove a region from the "regions" array field.
-      studentRef.update({
-        "fav": FieldValue.arrayRemove([branch.bID]),
-      });
-      _student.fav.remove(branch.bID);
-    }
+  // void addOrDel(Branch branch) {
+  //   final db = FirebaseFirestore.instance;
+  //   final studentRef = db.collection("students").doc(userId);
+  //   if (selectionIs) {
+  //     // Atomically add a new region to the "regions" array field.
+  //     studentRef.update({
+  //       "fav": FieldValue.arrayUnion(["${in}${branch.bID}"]),
+  //     });
+  //     _student.fav.add(branch.bID);
+  //   } else {
+  //     // Atomically remove a region from the "regions" array field.
+  //     studentRef.update({
+  //       "fav": FieldValue.arrayRemove([branch.bID]),
+  //     });
+  //     _student.fav.remove(branch.bID);
+  //   }
 
-    print("prssed- ${_student.fav.contains(branch.bID)}");
-    setState(() {
-      selectionIs = !selectionIs;
-    });
-  }
+  //   print("prssed- ${_student.fav.contains(branch.bID)}");
+  //   setState(() {
+  //     selectionIs = !selectionIs;
+  //   });
+  // }
 
   @override
   void initState() {
@@ -133,9 +135,9 @@ class _AllInstituteState extends State<AllInstitute>
     List<Widget> branchWidget = [];
     // loop for showing branches in institute
     for (var i = 0; i < institute.branches.length; i++) {
-      List<String>.from(
-        userData['fav'],
-      ).contains(institute.branches);
+      // List<String>.from(
+      //   userData['fav'],
+      // ).contains(institute.branches);
       branchWidget.add(
         // Card(
         //   child: ListTile(
@@ -340,7 +342,13 @@ class _AllInstituteState extends State<AllInstitute>
         ),
         Expanded(
           child: RefreshIndicator(
-            onRefresh: widget.refreshInstitute,
+            onRefresh: () async {
+              await widget.refreshInstitute().then((value) {
+                setState(() {
+                  // allbranchies = branchesInstitutes;
+                });
+              });
+            },
             child: ListView.builder(
               itemCount: allbranchies.length,
               itemBuilder: (context, index) {

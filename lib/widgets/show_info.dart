@@ -6,6 +6,7 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:seats_availability_in_university/main.dart';
 
+import '../pages/front_page.dart';
 import '../pages/home.dart';
 import '../pages/update_institute.dart';
 
@@ -99,15 +100,19 @@ class ShowInfo extends StatelessWidget {
                                       : nameController.text;
                                   final usersRef =
                                       db.collection(userCollection).doc(userId);
+
+                                  userData[keyToChng] = updateValute;
+
                                   // .where("uid", isEqualTo: uid);
                                   usersRef.update(
                                       {keyToChng: updateValute}).then((value) {
-                                    refreshUserInfo;
+                                    refreshUserInfo();
                                     print(
                                         "DocumentSnapshot successfully updated!");
                                   },
                                       onError: (e) =>
                                           print("Error updating document $e"));
+                                  // refreshUserInfo();
                                   //pop from dialog
                                   Navigator.pop(context);
                                 }

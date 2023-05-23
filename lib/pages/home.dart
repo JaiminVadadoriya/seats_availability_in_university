@@ -8,15 +8,11 @@ import 'dart:async';
 // import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 // import 'package:geolocator/geolocator.dart';
 // import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
-import 'package:seats_availability_in_university/models/rounds.dart';
-import 'package:seats_availability_in_university/models/student.dart';
 import 'package:seats_availability_in_university/pages/all_institute.dart';
-import 'package:seats_availability_in_university/pages/fav_institute.dart';
 import 'package:seats_availability_in_university/pages/messaging.dart';
 import 'package:seats_availability_in_university/pages/priority.dart';
 import 'package:seats_availability_in_university/pages/profile.dart';
@@ -27,6 +23,7 @@ import '../models/institute.dart';
 import '../utils/globals.dart';
 import '../widgets/merit.dart';
 import '../widgets/signout_drawer.dart';
+import 'front_page.dart';
 
 // import 'package:timezone/timezone.dart' as tz;
 // late Future<Rounds> rounds;
@@ -42,9 +39,10 @@ late Map<String, dynamic> userData;
 //   mockRoundEnd: Timestamp.now(),
 // );
 
-late String userId = "";
+String userId = "";
 List<Branch> ownBranches = [];
 
+List<Institute> allbranchies = [];
 List<Institute> branchesInstitutes = [
   // Institute(
   //   name: "GP, Gandhinagar",
@@ -113,24 +111,13 @@ class _HomeState extends State<Home> {
     });
   }
 
-  late Future _initInstituteData;
-  // List<String> _docIds = [];
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    _initInstituteData = _initInstitute();
-    // _initRounds();
-    _initUserInfo();
-    super.initState();
-  }
-
   Future<void> _initUserInfo() async {
-    String? _emailid = FirebaseAuth.instance.currentUser?.email;
+    String? emailid = FirebaseAuth.instance.currentUser?.email;
 
     final db = FirebaseFirestore.instance;
-    final usersRef = db.collection('institutes').where("loginemail", isEqualTo: _emailid);
-  //  print("exist - ${_uid}");
+    final usersRef =
+        db.collection('institutes').where("loginemail", isEqualTo: emailid);
+    //  print("exist - ${_uid}");
     Query<Map<String, dynamic>> studentRef;
     Map<String, dynamic> userDataFun = {};
 
@@ -165,17 +152,18 @@ class _HomeState extends State<Home> {
                         ),
 
                     userDataFun = docs.data(),
-                    setState(() {
-                      userData = userDataFun;
-                    }),
+                    // setState(() {
+                    userData = userDataFun,
+                    // }),
                     print("institute exist!!!"),
                     print("institute ${userDataFun} exist!!!"),
                   }
               }
             else
               {
-                studentRef =
-                    db.collection('students').where("email", isEqualTo: _emailid),
+                studentRef = db
+                    .collection('students')
+                    .where("email", isEqualTo: emailid),
                 studentRef.get().then(
                   (docSnapshot) {
                     if (docSnapshot.docs.isNotEmpty) {
@@ -184,9 +172,9 @@ class _HomeState extends State<Home> {
                         userId = docs.id;
 
                         userDataFun = docs.data();
-                        setState(() {
-                          userData = userDataFun;
-                        });
+                        // setState(() {
+                        userData = userDataFun;
+                        // });
                         print("students exist!!!");
                         print("students ${userDataFun} exist!!!");
                       }
@@ -199,14 +187,23 @@ class _HomeState extends State<Home> {
               }
           },
         );
-    setState(() {
-      userData = userDataFun;
-    });
+    // setState(() {
+    userData = userDataFun;
+    // });
     // return userDataFun;
     // final data =
     //     await FirebaseFirestore.instance.collection('institutes').doc().get().then((value) => {
     //  user = value.data(),
     // String name = data['user'];
+  }
+
+  // List<String> _docIds = [];
+
+  @override
+  void initState() {
+    // _initRounds();
+    _initUserInfo();
+    super.initState();
   }
 
   // Future<void> _initInstitute() async {
@@ -239,62 +236,11 @@ class _HomeState extends State<Home> {
   //       );
   // }
 
-  Future<void> _initInstitute() async {
-    await FirebaseFirestore.instance.collection('institutes').get().then(
-          (snapshot) => snapshot.docs.forEach(
-            (document) {
-              List<Branch> branches = [];
-              FirebaseFirestore.instance
-                  .collection('institutes')
-                  .doc(document.id)
-                  .collection('branch')
-                  .get()
-                  .then(
-                    (value) => value.docs.forEach(
-                      (element) {
-                        branches.add(
-                          Branch.fromFirestore(
-                            element,
-                            SnapshotOptions(),
-                          ),
-                        );
-                      },
-                    ),
-                  );
-              Institute temp = Institute.fromFirestore(
-                document,
-                SnapshotOptions(),
-              );
-              temp.branches = branches;
-              branchesInstitutes.add(temp);
-            },
-          ),
-        );
-    // for (var branch in temp.branches) {
-    //   if (branchesInstitutes.any((inst) =>
-    //       inst.uid == temp.uid &&
-    //       inst.branches
-    //           .any((b) => b.branchName == branch.branchName))) {
-    //     continue;
-    //   }
-    // Branch newBranch = Branch(
-    //   isFav: branch.isFav,
-    //   minMarks: branch.minMarks,
-    //   totalSeats: branch.totalSeats,
-    //   filledSeats: branch.filledSeats,
-    //   branchName: branch.branchName,
-    // );
-    // Institute newInstitute = temp.copyWith(branches: [newBranch]);
-    // }
-    setState(() {});
-  }
-
   Future<void> refreshInstitute() async {
-    
     // List<String> documentIds = [];
     branchesInstitutes = [];
-    //vaidik
-    
+    //
+
     await FirebaseFirestore.instance.collection('institutes').get().then(
           (snapshot) => snapshot.docs.forEach(
             (document) {
@@ -325,7 +271,8 @@ class _HomeState extends State<Home> {
             },
           ),
         );
-        // vaidik end
+    // end
+    // allbranchies = branchesInstitutes;
     setState(() {});
   }
 
@@ -333,11 +280,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     // https://firebase.google.com/docs/firestore/query-data/get-data
 //     // below line is used to get the
-    
+
     List<Widget> widgetOptions = userData['user'] == "student"
         ? <Widget>[
-          //vaidik
-         
+            //vaidik
+
             AllInstitute(
               refreshInstitute: refreshInstitute,
               rounds: rounds,
@@ -355,7 +302,7 @@ class _HomeState extends State<Home> {
             //         }),
           ]
         : <Widget>[
-           Message_Page(),
+            Message_Page(),
 
             // FavInstitute(
             //   refreshInstitute: refreshInstitute,
@@ -382,43 +329,43 @@ class _HomeState extends State<Home> {
       // ---> below we provide priorities logic
       //
 
-      floatingActionButton: _selectedIndex == 0
-          ? 
-           rounds.roundOpen(Timestamp.now()) || rounds.mockRoundOpen(Timestamp.now())?
-          Container(
-            
-              margin: EdgeInsets.symmetric(horizontal: 100),
-              child: FloatingActionButton.extended(
-                onPressed: () async {
-                  // NotificationApi.initState();
+      floatingActionButton: _selectedIndex == 0 && userData['user'] == "student"
+          ? rounds.roundOpen(Timestamp.now()) ||
+                  rounds.mockRoundOpen(Timestamp.now())
+              ? Container(
+                  margin: EdgeInsets.symmetric(horizontal: 100),
+                  child: FloatingActionButton.extended(
+                    onPressed: () async {
+                      // NotificationApi.initState();
 
-                  // // void listenNotifications() =>
-                  // //     NotificationApi.onNotification.stream.listen(onClickedNotification);
-                  // NotificationApi.showScheduledNotification(
-                  //   title: 'hi${FirebaseAuth.instance.currentUser?.displayName}',
-                  //   body: 'hey! Do we have everything we need for the lunch',
-                  //   payload: 'sarah.abs',
-                  //   scheduledDate: tz.TZDateTime.now(tz.local).add(
-                  //     const Duration(seconds: 1),
-                  //   ),
-                  // );
-                  // if (MyMap.problemSelected) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: ((context) => const Priority()),
-                    ),
-                  );
-                  // } else {
-                  //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                  //     content: Text("Please select problem location!!!"),
-                  //   ));
-                  // }
-                },
-                label: const Text('added collages'),
-                icon: const Icon(Icons.add),
-              ),
-            ):Container()
+                      // // void listenNotifications() =>
+                      // //     NotificationApi.onNotification.stream.listen(onClickedNotification);
+                      // NotificationApi.showScheduledNotification(
+                      //   title: 'hi${FirebaseAuth.instance.currentUser?.displayName}',
+                      //   body: 'hey! Do we have everything we need for the lunch',
+                      //   payload: 'sarah.abs',
+                      //   scheduledDate: tz.TZDateTime.now(tz.local).add(
+                      //     const Duration(seconds: 1),
+                      //   ),
+                      // );
+                      // if (MyMap.problemSelected) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: ((context) => Priority()),
+                        ),
+                      );
+                      // } else {
+                      //   ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                      //     content: Text("Please select problem location!!!"),
+                      //   ));
+                      // }
+                    },
+                    label: const Text('added collages'),
+                    icon: const Icon(Icons.add),
+                  ),
+                )
+              : Container()
           : null,
       //
       // ---> below we provide appbar logic
