@@ -1,7 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:seats_availability_in_university/utils/routes.dart';
 
 class SignoutDrawer extends StatelessWidget {
@@ -14,8 +12,8 @@ class SignoutDrawer extends StatelessWidget {
         padding: const EdgeInsets.fromLTRB(8.0, 40, 8.0, 8.0),
         child: Column(
           children: [
-            SizedBox(
-              child: const CircleAvatar(
+            const SizedBox(
+              child: CircleAvatar(
                 radius: 40,
                 // backgroundColor: Color.fromRGBO(0, 102, 133, 1),
                 child: Padding(
@@ -28,7 +26,7 @@ class SignoutDrawer extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 40,
             ),
             ElevatedButton(
@@ -41,7 +39,7 @@ class SignoutDrawer extends StatelessWidget {
                   (route) => false,
                 );
               },
-              child: Text("Sign out"),
+              child: const Text("Sign out"),
             ),
           ],
         ),

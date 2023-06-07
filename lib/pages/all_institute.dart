@@ -1,20 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:seats_availability_in_university/models/rounds.dart';
-import 'package:seats_availability_in_university/models/student.dart';
 
-import 'package:seats_availability_in_university/pages/details_page.dart';
 import 'package:seats_availability_in_university/widgets/institue_card.dart';
 
-import '../main.dart';
 import '../models/institute.dart';
 import '../utils/globals.dart';
-import '../utils/routes.dart';
 import 'front_page.dart';
 import 'home.dart';
 
@@ -52,11 +45,9 @@ class AllInstitute extends StatefulWidget {
 
 class _AllInstituteState extends State<AllInstitute>
     with TickerProviderStateMixin {
-  Student _student = Student.fromMap(userData);
-
   String searchText = "";
   bool selectionIs = true;
-  var _controller = TextEditingController();
+  final _controller = TextEditingController();
   //late
   late Animation<double> animation;
   late AnimationController controller;
@@ -113,7 +104,6 @@ class _AllInstituteState extends State<AllInstitute>
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     allbranchies = branchesInstitutes;
     controller =
@@ -126,7 +116,6 @@ class _AllInstituteState extends State<AllInstitute>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     controller.dispose();
     super.dispose();
   }
@@ -223,7 +212,7 @@ class _AllInstituteState extends State<AllInstitute>
                 Expanded(
                   child: Material(
                     elevation: 1.2,
-                    borderRadius: BorderRadius.horizontal(
+                    borderRadius: const BorderRadius.horizontal(
                       left: Radius.circular(30.0),
                       right: Radius.circular(4.0),
                     ),
@@ -238,7 +227,7 @@ class _AllInstituteState extends State<AllInstitute>
                         // }
                         // });
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         filled: true,
                         // fillColor: Theme.of(context).focusColor,
                         // border: OutlineInputBorder(
@@ -267,7 +256,7 @@ class _AllInstituteState extends State<AllInstitute>
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   width: 3.5,
                 ),
                 // providing filter page
@@ -286,13 +275,13 @@ class _AllInstituteState extends State<AllInstitute>
                           (states) {
                             // If the button is pressed, return green, otherwise blue
                             if (states.contains(MaterialState.pressed)) {
-                              return RoundedRectangleBorder(
+                              return const RoundedRectangleBorder(
                                 // side: BorderSide(),
                                 borderRadius: BorderRadiusDirectional.all(
                                     Radius.circular(8.0)),
                               );
                             }
-                            return RoundedRectangleBorder(
+                            return const RoundedRectangleBorder(
                               // side: BorderSide(),
                               borderRadius: BorderRadiusDirectional.horizontal(
                                 start: Radius.circular(
@@ -321,7 +310,7 @@ class _AllInstituteState extends State<AllInstitute>
                       child:
                           // Row(
                           //   children: [
-                          Icon(
+                          const Icon(
                         CupertinoIcons.slider_horizontal_3,
                         // color: ThemeData().secondaryHeaderColor,
                       ),
@@ -352,10 +341,8 @@ class _AllInstituteState extends State<AllInstitute>
             child: ListView.builder(
               itemCount: allbranchies.length,
               itemBuilder: (context, index) {
-                return Container(
-                  child: Column(
-                    children: branchDisplayer(allbranchies[index]),
-                  ),
+                return Column(
+                  children: branchDisplayer(allbranchies[index]),
                 );
 
                 // ListView.builder(

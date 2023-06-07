@@ -1,16 +1,16 @@
 // import 'package:ai_app/models/user.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 
 import '../../utils/routes.dart';
-import 'login.dart';
 import 'package:flutter/material.dart';
 
 class Signup extends StatefulWidget {
   static TextEditingController mailController = TextEditingController();
   static TextEditingController passwordController = TextEditingController();
+
+  const Signup({super.key});
   @override
   State<Signup> createState() => _SignupState();
 }
@@ -72,7 +72,7 @@ class _SignupState extends State<Signup> {
                 //   height: 20,
                 // ),
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
@@ -83,15 +83,15 @@ class _SignupState extends State<Signup> {
                     }
                     return null;
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "",
                     labelText: "E-mail",
                   ),
                   keyboardType: TextInputType.emailAddress,
-                  style: TextStyle(),
+                  style: const TextStyle(),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
@@ -126,7 +126,7 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
 
@@ -165,7 +165,7 @@ class _SignupState extends State<Signup> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 SizedBox(
@@ -183,15 +183,10 @@ class _SignupState extends State<Signup> {
                           showDialog(
                             context: context,
                             builder: (context) {
-                              return Center(
+                              return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             },
-                          );
-                          final credential = await FirebaseAuth.instance
-                              .createUserWithEmailAndPassword(
-                            email: Signup.mailController.text,
-                            password: Signup.passwordController.text,
                           );
                           Navigator.of(context).pop();
 
@@ -213,11 +208,16 @@ class _SignupState extends State<Signup> {
                                   content: Text(
                                       'The account already exists for that email.')),
                             );
-                            print('The account already exists for that email.');
+                            if (kDebugMode) {
+                              print(
+                                  'The account already exists for that email.');
+                            }
                           }
                         } catch (e) {
                           Navigator.of(context).pop();
-                          print(e);
+                          if (kDebugMode) {
+                            print(e);
+                          }
                         }
 
                         // If the form is valid, display a snackbar. In the real world,
@@ -255,7 +255,7 @@ class _SignupState extends State<Signup> {
                         })
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
               ],

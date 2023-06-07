@@ -8,13 +8,13 @@ class FilterDrawer extends StatelessWidget {
     return const Drawer(
       child: SafeArea(
         child: Padding(
-          padding: const EdgeInsets.symmetric(
+          padding: EdgeInsets.symmetric(
             horizontal: 16.0,
             vertical: 24.0,
           ),
           child: ElevatedButton(
-            child: Text("data"),
             onPressed: null,
+            child: Text("data"),
           ),
           // child: ListView.separated(
           //   itemBuilder: (BuildContext context, int index) {

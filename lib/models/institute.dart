@@ -142,7 +142,9 @@ class Institute {
         (map['branches'] as List).map<Branch>(
           (x) {
             Branch tempBranch = Branch.fromMap(x as Map<String, dynamic>);
-            print("branch - ${tempBranch}");
+            if (kDebugMode) {
+              print("branch - $tempBranch");
+            }
             return tempBranch;
           },
         ),
@@ -431,7 +433,6 @@ class BranchInstitute {
     );
   }
 
-  @override
   Map<String, dynamic> toFirestore() {
     return {
       if (name != null) "name": name,

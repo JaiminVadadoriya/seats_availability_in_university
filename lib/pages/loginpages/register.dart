@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:seats_availability_in_university/pages/institute_detail.dart';
 import 'package:seats_availability_in_university/pages/student_detail.dart';
 
@@ -13,9 +11,9 @@ class Register extends StatelessWidget {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: Text('Register Details'),
+          title: const Text('Register Details'),
           automaticallyImplyLeading: false,
-          bottom: TabBar(
+          bottom: const TabBar(
             indicatorColor: Colors.white,
             tabs: [
               Tab(text: 'Student', icon: Icon(Icons.account_box_rounded)),

@@ -1,26 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../models/institute.dart';
 
 class DetailsPage extends StatelessWidget {
   const DetailsPage({super.key, required this.institute});
 
-  @override
   final Institute institute;
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           leading: IconButton(
-              icon: Icon(Icons.arrow_back_ios_rounded),
+              icon: const Icon(Icons.arrow_back_ios_rounded),
               onPressed: () {
                 Navigator.pop(context);
               }),
-          title: Text("Institute"),
+          title: const Text("Institute"),
         ),
         body: Container(
-          padding: EdgeInsets.symmetric(
+          padding: const EdgeInsets.symmetric(
             horizontal: 5.0,
             vertical: 10.0,
           ),
@@ -30,7 +28,7 @@ class DetailsPage extends StatelessWidget {
               child: CircleAvatar(
                 backgroundColor: Theme.of(context).primaryColor,
                 radius: 40,
-                child: Padding(
+                child: const Padding(
                   padding: EdgeInsets.all(6),
                   child: FittedBox(
                     child: Icon(
@@ -41,49 +39,49 @@ class DetailsPage extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
               "Name: ${institute.name}",
-              style: TextStyle(fontSize: 25),
+              style: const TextStyle(fontSize: 25),
             ),
-            SizedBox(
+            const SizedBox(
               height: 20,
             ),
             Text(
               "Address: ${institute.address}",
-              style: TextStyle(fontSize: 17),
+              style: const TextStyle(fontSize: 17),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
               "Ashii code: ${institute.ashiiCode}",
-              style: TextStyle(fontSize: 17),
+              style: const TextStyle(fontSize: 17),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
               "Email: ${institute.email}",
-              style: TextStyle(fontSize: 17),
+              style: const TextStyle(fontSize: 17),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
               "Site: ${institute.site}",
-              style: TextStyle(fontSize: 17),
+              style: const TextStyle(fontSize: 17),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
             Text(
               "Phone: ${institute.phone}",
-              style: TextStyle(fontSize: 17),
+              style: const TextStyle(fontSize: 17),
             ),
-            SizedBox(
+            const SizedBox(
               height: 10,
             ),
           ]),

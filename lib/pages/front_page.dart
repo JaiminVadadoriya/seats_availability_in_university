@@ -2,16 +2,14 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/scheduler.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 
 import '../models/institute.dart';
 import '../models/rounds.dart';
 import '../utils/routes.dart';
 import 'home.dart';
-import 'loginpages/login.dart';
 
 Rounds rounds = Rounds(
   firstRoundStart: Timestamp.now(),
@@ -35,7 +33,9 @@ Future<void> _initRounds() async {
     mockRoundStart: Timestamp.now(),
     mockRoundEnd: Timestamp.now(),
   );
-  print("phele - ${returnValue}");
+  if (kDebugMode) {
+    print("phele - $returnValue");
+  }
   rounds = await FirebaseFirestore.instance.collection('Admin').get().then(
     (snapshot) {
       for (var document in snapshot.docs) {
@@ -48,11 +48,15 @@ Future<void> _initRounds() async {
     //   },
     ,
     onError: (e) {
-      print(e);
+      if (kDebugMode) {
+        print(e);
+      }
     },
   );
 
-  print("badme - ${returnValue}");
+  if (kDebugMode) {
+    print("badme - $returnValue");
+  }
   // return returnValue;
 }
 
@@ -100,8 +104,6 @@ Future<void> _initUserInfo() async {
                   // setState(() {
                   userData = userDataFun,
                   // }),
-                  print("institute exist!!!"),
-                  print("institute ${userDataFun} exist!!!"),
                 }
             }
           else
@@ -119,11 +121,8 @@ Future<void> _initUserInfo() async {
                       // setState(() {
                       userData = userDataFun;
                       // });
-                      print("students exist!!!");
-                      print("students ${userDataFun} exist!!!");
                     }
                   } else {
-                    print("no exist!!!");
                     //no student and institute data
                   }
                 },

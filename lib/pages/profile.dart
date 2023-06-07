@@ -10,12 +10,13 @@ class Profile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         horizontal: 5,
         vertical: 10,
       ),
-      child:
-          userData['user'] == "student" ? ProfileStudent() : ProfileInstitute(),
+      child: userData['user'] == "student"
+          ? const ProfileStudent()
+          : const ProfileInstitute(),
       // Center(
       //   child: Column(
       //     crossAxisAlignment: CrossAxisAlignment.center,

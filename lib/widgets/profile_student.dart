@@ -1,14 +1,14 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:seats_availability_in_university/models/institute.dart';
 import 'package:seats_availability_in_university/widgets/show_info.dart';
 
-import '../main.dart';
 import '../pages/front_page.dart';
 import '../pages/home.dart';
-import '../utils/conform_seat.dart';
-import 'merit.dart';
 
 class ProfileStudent extends StatefulWidget {
+  const ProfileStudent({super.key});
+
   @override
   State<ProfileStudent> createState() => _ProfileStudentState();
 }
@@ -23,18 +23,48 @@ class _ProfileStudentState extends State<ProfileStudent> {
     usersRef.get().then((value) {
       setState(() {
         userData = value.data()!;
+        if (userData["confinstitute"].toString().isNotEmpty &&
+            userData["confbranch"].toString().isNotEmpty) {
+          refreshInstituteInfo(value.data()!["confinstitute"].toString(),
+              value.data()!["confbranch"].toString());
+        }
         // student = userData[" "]fromMap(userData);
       });
     });
   }
 
+  Future<void> refreshInstituteInfo(String insti, String bran) async {
+    final db = FirebaseFirestore.instance;
+    db.collection("institutes").doc(insti).get().then(
+      (val) {
+        confromInstitute = Institute.fromFirestore(val, SnapshotOptions()).name;
+        db
+            .collection("institutes")
+            .doc(insti)
+            .collection("branch")
+            .doc(bran)
+            .get()
+            .then(
+          (value) {
+            setState(() {
+              confromBranch =
+                  Branch.fromFirestore(value, SnapshotOptions()).branchName;
+            });
+          },
+        );
+      },
+    );
+  }
+
+  String confromInstitute = "";
+  String confromBranch = "";
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     refreshUserInfo();
   }
 
+  final db = FirebaseFirestore.instance;
   @override
   Widget build(BuildContext context) {
     // conformInstitute();
@@ -47,8 +77,8 @@ class _ProfileStudentState extends State<ProfileStudent> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          FittedBox(
-            child: const CircleAvatar(
+          const FittedBox(
+            child: CircleAvatar(
               radius: 40,
               // backgroundColor: Theme.of(context).primaryColor,
               child: Padding(
@@ -62,21 +92,21 @@ class _ProfileStudentState extends State<ProfileStudent> {
           ),
           Text(
             "${userData["name"]}",
-            style: TextStyle(fontSize: 29),
+            style: const TextStyle(fontSize: 29),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           userData["meritNo"] < 0
-              ? Text(
+              ? const Text(
                   "Merit no doesn't assign",
                   style: TextStyle(fontSize: 20),
                 )
               : Text(
                   "${userData["meritNo"]}",
-                  style: TextStyle(fontSize: 23),
+                  style: const TextStyle(fontSize: 23),
                 ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Expanded(
@@ -84,7 +114,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
               child: Container(
                 decoration: BoxDecoration(
                   color: ThemeData().focusColor,
-                  borderRadius: BorderRadius.all(
+                  borderRadius: const BorderRadius.all(
                     Radius.circular(8.0),
                   ),
                 ),
@@ -95,7 +125,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                   ),
                   child: Column(
                     children: [
-                      SizedBox(
+                      const SizedBox(
                         height: 20,
                       ),
                       ShowInfo(
@@ -103,15 +133,14 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         userCollection: 'students',
                         keyToChng: "seatNo",
                         iconData: Icons.chair_alt,
-                        string:
-                            "${userData["seatNo"].toString().toUpperCase()}",
+                        string: userData["seatNo"].toString().toUpperCase(),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return "Seat Number can't be empty";
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "",
                           labelText: "Seat Number",
                           border: OutlineInputBorder(),
@@ -136,7 +165,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "",
                           // labelText: "English marks",
                           labelText: "Maths marks",
@@ -162,7 +191,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "",
                           labelText: "Science marks",
                           border: OutlineInputBorder(),
@@ -187,7 +216,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "",
                           labelText: "English marks",
                           border: OutlineInputBorder(),
@@ -212,7 +241,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "",
                           labelText: "SocialScience marks",
                           border: OutlineInputBorder(),
@@ -237,7 +266,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                           }
                           return null;
                         },
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           hintText: "",
                           labelText: "Gujrati marks",
                           border: OutlineInputBorder(),
@@ -245,61 +274,104 @@ class _ProfileStudentState extends State<ProfileStudent> {
                         keyboardType: TextInputType.number,
                         refreshUserInfo: refreshUserInfo,
                       ),
-                      rounds.mockroundEnds(Timestamp.now())
-                          ? Container(
-                              child: Column(children: [
-                              // String namesinst = conformInstitute();
-                              // Text(conformInstitute() as String),
-                              // SizedBox(
-                              //    height: 5,
-                              //       ),
-                            ]))
-                          : Container(),
-                      rounds.roundEnds(Timestamp.now())
-                          ? Container(
-                              child: Column(
-                                children: [
-                                  Text("conform you seat in "),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      Future<bool> conform = conformSeat();
-                                      //  bool checkConf=await conform as bool;
-                                      //  print(checkConf);
+                      // rounds.mockroundEnds(Timestamp.now())
+                      //     ? Container(
+                      //         child: Column(children: [
+                      //         // String namesinst = conformInstitute();
+                      //         Text(""),
+                      //         SizedBox(
+                      //            height: 5,
+                      //               ),
+                      //       ]))
+                      //     : Container(),
+                      rounds.roundEnds(Timestamp.now()) &&
+                              userData["confinstitute"].toString().isNotEmpty &&
+                              userData["confbranch"].toString().isNotEmpty
+                          ? Column(
+                              children: [
+                                Text(
+                                  "conform you seat in $confromInstitute - $confromBranch",
+                                  style: TextStyle(fontSize: 18),
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        // Future<bool> conform = conformSeat();
+                                        //  bool checkConf=await conform as bool;
+                                        //  print(checkConf);
+                                        db
+                                            .collection("institutes")
+                                            .doc(userData["confinstitute"])
+                                            .collection("branch")
+                                            .doc(userData["confbranch"])
+                                            .get()
+                                            .then((value) {
+                                          Branch branch =
+                                              Branch.fromMap(value.data()!);
+                                          db
+                                              .collection("institutes")
+                                              .doc(userData["confinstitute"])
+                                              .collection("branch")
+                                              .doc(userData["confbranch"])
+                                              // .doc(instituteData[z].branches[x].bID)
+                                              .update({
+                                            'filledSeats':
+                                                (branch.filledSeats + 1)
+                                          }).then((value) {
+                                            db
+                                                .collection("students")
+                                                .doc(userData["uid"])
+                                                .update({
+                                              'isSeatConf': true,
+                                            });
+                                          });
+                                        });
 
-                                      //if(!checkConf){
+                                        //if(!checkConf){
 
-                                      //    print("ho raha he");
-                                      Text(
-                                          "You have successfully confirmed your institute branch ${userData["confbranch"].toString()}");
-                                      // }
-                                    },
-                                    child: Text("conform"),
-                                  ),
-                                  SizedBox(
-                                    height: 5,
-                                  ),
-                                  ElevatedButton(
-                                    onPressed: () async {
-                                      //Future<bool> conform= conformInstitute();
-                                      //   if(await conform){
-                                      //   final db = FirebaseFirestore.instance;
-                                      //  db
-                                      //    .collection("students")
-                                      //          .doc(userData[" "]uid)
-                                      //      .update({
-                                      //        "isSeatConf": context
-                                      //       });
-                                      Text(
-                                          "You have cencel your confirmed  institute ");
-                                      // }
-                                    },
-                                    child: Text("cencel"),
-                                  ),
-                                ],
-                              ),
+                                        //    print("ho raha he");
+                                        Text(
+                                            "You have successfully confirmed your institute branch ${userData["confbranch"].toString()}");
+                                        // }
+                                      },
+                                      child: const Text("conform"),
+                                    ),
+                                    const SizedBox(
+                                      width: 5,
+                                    ),
+                                    ElevatedButton(
+                                      onPressed: () async {
+                                        //Future<bool> conform= conformInstitute();
+                                        //   if(await conform){
+                                        //   final db = FirebaseFirestore.instance;
+                                        //  db
+                                        //    .collection("students")
+                                        //          .doc(userData[" "]uid)
+                                        //      .update({
+                                        //        "isSeatConf": context
+                                        //       });
+                                        // db
+                                        //     .collection("students")
+                                        //     .doc(userData["uid"])
+                                        //     .update({
+                                        //   'confinstitute': "",
+                                        //   'confbranch': "",
+                                        // });
+                                        const Text(
+                                          "You have cancel your confirmed  institute ",
+                                        );
+                                        // }
+                                      },
+                                      child: const Text("cancel"),
+                                    ),
+                                  ],
+                                ),
+                              ],
                             )
                           : Container(),
                     ],

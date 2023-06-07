@@ -20,8 +20,9 @@ class Rounds {
     }
     return false;
   }
+
 //vaidik
-    bool mockRoundOpen(Timestamp cureentTime) {
+  bool mockRoundOpen(Timestamp cureentTime) {
     // if (
     if (registerStart.compareTo(cureentTime) < 0 &&
         registerEnd.compareTo(cureentTime) > 0) {
@@ -49,12 +50,10 @@ class Rounds {
   }
 
   bool roundOpen(Timestamp cureentTime) {
-     if (mockRoundStart.compareTo(cureentTime) < 0 &&
+    if (mockRoundStart.compareTo(cureentTime) < 0 &&
         mockRoundEnd.compareTo(cureentTime) > 0) {
       return true;
-    } 
-
-    else if (firstRoundStart.compareTo(cureentTime) < 0 &&
+    } else if (firstRoundStart.compareTo(cureentTime) < 0 &&
         firstRoundEnd.compareTo(cureentTime) > 0) {
       return true;
     } else if (secondRoundStart.compareTo(cureentTime) < 0 &&
@@ -71,20 +70,20 @@ class Rounds {
     if (firstRoundEnd.compareTo(cureentTime) < 0 &&
         secondRoundStart.compareTo(cureentTime) > 0) {
       return true;
-    }
-    else if(secondRoundEnd.compareTo(cureentTime) < 0){
+    } else if (secondRoundEnd.compareTo(cureentTime) < 0) {
       return true;
     }
     return false;
   }
-    bool mockroundEnds(Timestamp cureentTime) {
+
+  bool mockroundEnds(Timestamp cureentTime) {
     if (mockRoundEnd.compareTo(cureentTime) < 0 &&
         firstRoundStart.compareTo(cureentTime) > 0) {
-      return true;}
-   
+      return true;
+    }
+
     return false;
   }
-
 
   Rounds({
     required this.registerStart,

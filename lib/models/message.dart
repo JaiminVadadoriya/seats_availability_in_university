@@ -2,18 +2,16 @@
 import 'dart:convert';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/foundation.dart';
 
 class Message {
-   String msgInfo;
-   String sender;
+  String msgInfo;
+  String sender;
   Timestamp timestamp;
 
   Message({
     required this.msgInfo,
     required this.sender,
     required this.timestamp,
-   
   });
 
   Message copyWith({
@@ -24,7 +22,6 @@ class Message {
       msgInfo: msgInfo ?? this.msgInfo,
       sender: sender ?? this.sender,
       timestamp: timestamp,
-      
     );
   }
 
@@ -61,7 +58,6 @@ class Message {
       msgInfo: map['msgInfo'] as String,
       sender: map['sender'] as String,
       timestamp: map['timestamp'] as Timestamp,
-
     );
   }
 
@@ -84,8 +80,6 @@ class Message {
 
   @override
   int get hashCode {
-    return msgInfo.hashCode ^
-        sender.hashCode ^
-        timestamp.hashCode;
+    return msgInfo.hashCode ^ sender.hashCode ^ timestamp.hashCode;
   }
 }

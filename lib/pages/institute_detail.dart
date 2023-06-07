@@ -1,12 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:seats_availability_in_university/models/institute.dart';
 import 'package:seats_availability_in_university/pages/loginpages/sign.dart';
 import 'package:seats_availability_in_university/widgets/select_branch.dart';
 
 import '../utils/routes.dart';
-import 'home.dart';
 
 class InstituteDetail extends StatelessWidget {
   InstituteDetail({super.key});
@@ -29,10 +29,10 @@ class InstituteDetail extends StatelessWidget {
       child: Form(
         key: _formKey,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               TextFormField(
@@ -43,14 +43,14 @@ class InstituteDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Eg - GP, Gandhinagar",
                   labelText: "Institute Name",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.name,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -61,14 +61,14 @@ class InstituteDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Eg - principal_gpg@yahoo.co.in",
                   labelText: "Institute Email",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.emailAddress,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -81,14 +81,14 @@ class InstituteDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Eg - 382028",
                   labelText: "Ashii code",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -99,7 +99,7 @@ class InstituteDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText:
                       "Eg - k-6, Electronics Indust. Estate, Sector-26, Gandhinagar - 382028",
                   labelText: "Institute Address",
@@ -107,7 +107,7 @@ class InstituteDetail extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.text,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -122,14 +122,14 @@ class InstituteDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Eg - (079) 27664785",
                   labelText: "Institute phone",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -140,14 +140,14 @@ class InstituteDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Eg - www.gpgandhinagar.edu.in",
                   labelText: "Institute website",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.text,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -160,14 +160,14 @@ class InstituteDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Eg - 120",
                   labelText: "Institute Branch Seats",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               SelectBranch(),
@@ -186,7 +186,7 @@ class InstituteDetail extends StatelessWidget {
               //   ),
               //   keyboardType: TextInputType.text,
               // ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -211,17 +211,21 @@ class InstituteDetail extends StatelessWidget {
                       site: siteController.text,
                       phone: phoneController.text,
                     );
-                    print("branch - ${branchInstitute}");
+                    if (kDebugMode) {
+                      print("branch - ${branchInstitute}");
+                    }
                     db
                         .collection("institutes")
                         .add(
                           branchInstitute.toFirestore(),
                         )
                         .then((value) {
-                      print(value.id);
-                      db
-                            .collection("institutes")
-                            .doc(value.id).update({"uid": value.id},);
+                      if (kDebugMode) {
+                        print(value.id);
+                      }
+                      db.collection("institutes").doc(value.id).update(
+                        {"uid": value.id},
+                      );
                       db
                           .collection("institutes")
                           .doc(value.id)
@@ -234,14 +238,6 @@ class InstituteDetail extends StatelessWidget {
                             branchName: SelectBranch.dropdownvalue,
                           ).toMap())
                           .then((val) {
-                        final branchRef = db
-                            .collection("institutes")
-                            .doc(value.id)
-                            .collection("branch")
-                            .doc(val.id)
-                            .update(
-                          {"bID": val.id},
-                        );
                         value.id;
                       });
                     });
@@ -253,7 +249,7 @@ class InstituteDetail extends StatelessWidget {
                     );
                   }
                 },
-                child: Text("Submit"),
+                child: const Text("Submit"),
               ),
             ],
           ),

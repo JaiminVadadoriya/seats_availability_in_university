@@ -2,13 +2,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:seats_availability_in_university/main.dart';
 
 import '../pages/front_page.dart';
 import '../pages/home.dart';
-import '../pages/update_institute.dart';
 
 class ShowInfo extends StatelessWidget {
   final IconData iconData;
@@ -52,13 +48,13 @@ class ShowInfo extends StatelessWidget {
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Icon(iconData),
-                      SizedBox(
+                      const SizedBox(
                         width: 10,
                       ),
                       Expanded(
                         child: Text(
-                          "${string}",
-                          style: TextStyle(
+                          string,
+                          style: const TextStyle(
                             fontSize: 17,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -107,8 +103,6 @@ class ShowInfo extends StatelessWidget {
                                   usersRef.update(
                                       {keyToChng: updateValute}).then((value) {
                                     refreshUserInfo();
-                                    print(
-                                        "DocumentSnapshot successfully updated!");
                                   },
                                       onError: (e) =>
                                           print("Error updating document $e"));
@@ -135,13 +129,13 @@ class ShowInfo extends StatelessWidget {
                       //     ),
                       //   );
                       // },
-                      icon: Icon(CupertinoIcons.pen),
+                      icon: const Icon(CupertinoIcons.pen),
                     )
                   : Container(),
             ],
           ),
         ),
-        SizedBox(
+        const SizedBox(
           height: 5,
         )
       ],

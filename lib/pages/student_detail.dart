@@ -1,8 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:seats_availability_in_university/models/student.dart';
 
 import '../utils/routes.dart';
@@ -24,10 +22,10 @@ class StudentDetail extends StatelessWidget {
       child: Form(
         key: _formKey,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
+          padding: const EdgeInsets.symmetric(horizontal: 25.0, vertical: 20.0),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               TextFormField(
@@ -38,14 +36,14 @@ class StudentDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "",
                   labelText: "Name",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.name,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -56,14 +54,14 @@ class StudentDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "",
                   labelText: "Seat Number",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.text,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -78,7 +76,7 @@ class StudentDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "",
                   // labelText: "English marks",
                   labelText: "Maths marks",
@@ -86,7 +84,7 @@ class StudentDetail extends StatelessWidget {
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -101,14 +99,14 @@ class StudentDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "",
                   labelText: "Science marks",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -123,14 +121,14 @@ class StudentDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "",
                   labelText: "English marks",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -145,14 +143,14 @@ class StudentDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "",
                   labelText: "SocialScience marks",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -167,14 +165,14 @@ class StudentDetail extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "",
                   labelText: "Gujrati marks",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -222,7 +220,7 @@ class StudentDetail extends StatelessWidget {
                     );
                   }
                 },
-                child: Text("Submit"),
+                child: const Text("Submit"),
               ),
             ],
           ),

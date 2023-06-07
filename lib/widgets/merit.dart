@@ -1,10 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:seats_availability_in_university/models/student.dart';
-
-import '../pages/home.dart';
+import 'package:flutter/foundation.dart';
 
 // class merit extends StatefulWidget {
 //   // const merit({super.key,required this.student, required this.i});
@@ -44,9 +39,8 @@ import '../pages/home.dart';
 // // //       }
 
 //   @override
-  
+
 // //   //   void initState() {
-// //   //   // TODO: implement initState
 // //   //   super.initState();
 // //   //   refreshUserInfo();
 // //   // }
@@ -67,7 +61,7 @@ import '../pages/home.dart';
 //     //calculateMeritList();
 //      return Column(
 //     children: [
-          
+
 //       ],
 //     );}}
 // //   }
@@ -151,7 +145,6 @@ Future<void> calculateMeritList() async {
   //   await studentRef.doc(student.uid).update(student.toFirestore());
   // }
 
-
   //////////////////
   ///
   final db = FirebaseFirestore.instance;
@@ -171,43 +164,40 @@ Future<void> calculateMeritList() async {
   //     'meritNo': data['meritNo'] ?? 0,
   //   };
   // }).toList();
-final students = studentDocs.docs.map((doc) => doc.data()).toList();
+  final students = studentDocs.docs.map((doc) => doc.data()).toList();
   // Sort the students based on their merit number and extra subject marks
- students.sort((a, b) {
+  students.sort((a, b) {
     int aMeritNumber = a['maths'] + a['science'] + a['english'];
     int bMeritNumber = b['maths'] + b['science'] + b['english'];
-    int aExtraSubject = a['maths'] + a['science'] + a['english'] + a['socialScience'] + a['gujrati'];
-    int bExtraSubject = b['maths'] + b['science'] + b['english']+b['socialScience'] + b['gujrati'];
-    int aseat= int.parse(a['seatNo']);
-    int bseat= int.parse(b['seatNo']);
-    
+    int aExtraSubject = a['maths'] +
+        a['science'] +
+        a['english'] +
+        a['socialScience'] +
+        a['gujrati'];
+    int bExtraSubject = b['maths'] +
+        b['science'] +
+        b['english'] +
+        b['socialScience'] +
+        b['gujrati'];
+
     if (aMeritNumber != bMeritNumber) {
-      print("threee");
+      if (kDebugMode) {
+        print("threee");
+      }
       return bMeritNumber.compareTo(aMeritNumber);
-     
-    } else{
-      
+    } else {
       return bExtraSubject.compareTo(aExtraSubject);
     }
 
+    //   else if (aExtraSubject == bExtraSubject){
+    //        if( bseat > aseat){
+    //           return aseat;
+    //            }
+    //      }
 
-
-
-
-  //   else if (aExtraSubject == bExtraSubject){
-  //        if( bseat > aseat){
-  //           return aseat;
-  //            }
-  //      }
-  
-  //  return bExtraSubject.compareTo(aExtraSubject);
-         
-       
-     
-    
-  }); 
-    //final s= studentDocs.docs.map((doc) => doc.id).toString();
-
+    //  return bExtraSubject.compareTo(aExtraSubject);
+  });
+  //final s= studentDocs.docs.map((doc) => doc.id).toString();
 
   // Assign the merit rank to each student
   int currentRank = 1;
@@ -216,20 +206,21 @@ final students = studentDocs.docs.map((doc) => doc.data()).toList();
       students[0]['english'] +
       students[0]['socialScience'] +
       students[0]['gujrati'];
-  
+
   for (int i = 0; i < students.length; i++) {
-  
     Map<String, dynamic> student = students[i];
-    int meritNumber =
-        student['maths'] + student['science'] + student['english'] + student['socialScience'] + student['gujrati'];
+    int meritNumber = student['maths'] +
+        student['science'] +
+        student['english'] +
+        student['socialScience'] +
+        student['gujrati'];
     if (meritNumber != currentMeritNumber) {
       currentRank = i + 1;
       currentMeritNumber = meritNumber;
     }
     student['meritNo'] = currentRank;
-     await studentRef.doc(studentDocs.docs[i].id).update(student);
+    await studentRef.doc(studentDocs.docs[i].id).update(student);
   }
-
 
   // Update the Firestore document with the merit rank
   // for (Map<String, dynamic> student in students) {

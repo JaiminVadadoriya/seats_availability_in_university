@@ -8,6 +8,8 @@ import 'package:seats_availability_in_university/widgets/show_info.dart';
 import '../pages/home.dart';
 
 class ProfileInstitute extends StatefulWidget {
+  const ProfileInstitute({super.key});
+
   @override
   State<ProfileInstitute> createState() => _ProfileInstituteState();
 }
@@ -27,7 +29,6 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
   }
 
   Future<void> refreshOwnBranches() async {
-    final db = FirebaseFirestore.instance;
     ownBranches = [];
     FirebaseFirestore.instance
         .collection('institutes')
@@ -65,13 +66,13 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+      padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: [
-          SizedBox(
-            child: const CircleAvatar(
+          const SizedBox(
+            child: CircleAvatar(
               radius: 40,
               // backgroundColor: Color.fromRGBO(0, 102, 133, 1),
               child: Padding(
@@ -84,7 +85,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
               ),
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -93,19 +94,25 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
             children: [
               Expanded(
                 child: Text(
-                  "${branchInstitute.name.toUpperCase()}",
-                  style: TextStyle(fontSize: 25),
+                  branchInstitute.name.toUpperCase(),
+                  style: const TextStyle(fontSize: 25),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 20,
           ),
           Expanded(
               child: SingleChildScrollView(
             child: Container(
+              decoration: BoxDecoration(
+                color: ThemeData().focusColor,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(8.0),
+                ),
+              ),
               child: Padding(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 16.0,
@@ -163,15 +170,14 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                       userCollection: 'institutes',
                       keyToChng: "email",
                       iconData: Icons.email,
-                      string:
-                          "${branchInstitute.email.toString().toUpperCase()}",
+                      string: branchInstitute.email.toString().toUpperCase(),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Email can't be empty";
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Eg - principal_gpg@yahoo.co.in",
                         labelText: "Institute Email",
                         border: OutlineInputBorder(),
@@ -185,15 +191,14 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                       userCollection: 'institutes',
                       keyToChng: "address",
                       iconData: Icons.location_on,
-                      string:
-                          "${branchInstitute.address.toString().toUpperCase()}",
+                      string: branchInstitute.address.toString().toUpperCase(),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Address can't be empty";
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText:
                             "Eg - k-6, Electronics Indust. Estate, Sector-26, Gandhinagar - 382028",
                         labelText: "Institute Address",
@@ -208,7 +213,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                       keyToChng: "ashiiCode",
                       iconData: Icons.numbers_rounded,
                       string:
-                          "${branchInstitute.ashiiCode.toString().toUpperCase()}",
+                          branchInstitute.ashiiCode.toString().toUpperCase(),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Number can't be empty";
@@ -217,7 +222,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Eg - 382028",
                         labelText: "Ashii code",
                         border: OutlineInputBorder(),
@@ -230,8 +235,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                       userCollection: 'institutes',
                       keyToChng: "phone",
                       iconData: Icons.phone,
-                      string:
-                          "${branchInstitute.phone.toString().toUpperCase()}",
+                      string: branchInstitute.phone.toString().toUpperCase(),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return "Number can't be empty";
@@ -242,7 +246,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                         }
                         return null;
                       },
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Eg - (079) 27664785",
                         labelText: "Institute phone",
                         border: OutlineInputBorder(),
@@ -256,15 +260,15 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                           trailing: ownBranches.length == 1
                               ? null
                               : IconButton(
-                                  icon: Icon(CupertinoIcons.delete),
+                                  icon: const Icon(CupertinoIcons.delete),
                                   onPressed: () {
                                     showDialog(
                                       context: context,
                                       builder: (BuildContext context) =>
                                           AlertDialog(
                                         title: const Text('Delete'),
-                                        content:
-                                            Text("Branch will be deleted!!!"),
+                                        content: const Text(
+                                            "Branch will be deleted!!!"),
                                         actions: <Widget>[
                                           TextButton(
                                             onPressed: () => {
@@ -300,33 +304,27 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                                   },
                                 ),
                           title: Text(
-                            "${branch.branchName}",
+                            branch.branchName,
                             overflow: TextOverflow.ellipsis,
                           ),
                           subtitle: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Flexible(
-                                child: Container(
-                                  child: Wrap(
-                                    children: [
-                                      Icon(Icons.chair_alt),
-                                      SizedBox(
-                                        width: 10,
+                                child: Wrap(
+                                  children: [
+                                    const Icon(Icons.chair_alt),
+                                    const SizedBox(
+                                      width: 10,
+                                    ),
+                                    Text(
+                                      "${branch.filledSeats.toString().toUpperCase()} / ${branch.totalSeats.toString().toUpperCase()}",
+                                      style: const TextStyle(
+                                        fontSize: 17,
+                                        overflow: TextOverflow.ellipsis,
                                       ),
-                                      Container(
-                                        // children: [
-                                        child: Text(
-                                          "${branch.filledSeats.toString().toUpperCase()} / ${branch.totalSeats.toString().toUpperCase()}",
-                                          style: TextStyle(
-                                            fontSize: 17,
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                        // ],
-                                      ),
-                                    ],
-                                  ),
+                                    ),
+                                  ],
                                 ),
                               ),
                               IconButton(
@@ -348,7 +346,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                                           }
                                           return null;
                                         },
-                                        decoration: InputDecoration(
+                                        decoration: const InputDecoration(
                                           hintText: "Eg - 120",
                                           labelText: "Institute Branch Seats",
                                           border: OutlineInputBorder(),
@@ -419,7 +417,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                                 //     ),
                                 //   );
                                 // },
-                                icon: Icon(CupertinoIcons.pen),
+                                icon: const Icon(CupertinoIcons.pen),
                               )
                             ],
                           ),
@@ -446,7 +444,7 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                         );
                         setState(() {});
                       },
-                      icon: Icon(CupertinoIcons.add_circled),
+                      icon: const Icon(CupertinoIcons.add_circled),
                       tooltip: "Add Branch",
                     ),
 
@@ -475,12 +473,6 @@ class _ProfileInstituteState extends State<ProfileInstitute> {
                     //       "${branchInstitute.branch.toString().toUpperCase()}",
                     // ),
                   ],
-                ),
-              ),
-              decoration: BoxDecoration(
-                color: ThemeData().focusColor,
-                borderRadius: BorderRadius.all(
-                  Radius.circular(8.0),
                 ),
               ),
             ),

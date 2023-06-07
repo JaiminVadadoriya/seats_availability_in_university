@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 // ignore: must_be_immutable
 class SelectBranch extends StatefulWidget {
   static String dropdownvalue = "Computer Engineering";
+
+  const SelectBranch({super.key});
   // Function dropDownFun;
 
   // SelectBranch({
@@ -29,22 +31,22 @@ class _SelectBranchState extends State<SelectBranch> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 0),
           child: DropdownButton(
-            hint: Text("Select Your Branch"),
+            hint: const Text("Select Your Branch"),
             value: SelectBranch.dropdownvalue,
             isExpanded: true,
-            borderRadius: BorderRadius.all(Radius.circular(.2)),
-            items: [
+            borderRadius: const BorderRadius.all(Radius.circular(.2)),
+            items: const [
               DropdownMenuItem(
-                child: Text("Computer Engineering"),
                 value: "Computer Engineering",
+                child: Text("Computer Engineering"),
               ),
               DropdownMenuItem(
-                child: Text("Mechanical Engineering"),
                 value: "Mechanical Engineering",
+                child: Text("Mechanical Engineering"),
               ),
               DropdownMenuItem(
-                child: Text("Information Technology Engineering"),
                 value: "Information Technology Engineering",
+                child: Text("Information Technology Engineering"),
               ),
             ],
             // value: dropdownvalue,
@@ -52,10 +54,7 @@ class _SelectBranchState extends State<SelectBranch> {
           ),
         ),
         SelectBranch.dropdownvalue.isEmpty
-            ? Container(
-                // padding: const EdgeInsets.symmetric(vertical: 30),
-                child: Text("Please select Branch from above"),
-              )
+            ? const Text("Please select Branch from above")
             : Container(),
       ],
     );

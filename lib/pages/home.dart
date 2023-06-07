@@ -1,29 +1,19 @@
 import 'dart:async';
 
-// import 'package:ai_app/pages/com_form.dart';
-// import 'package:ai_app/utils/notification_api.dart';
-// import 'package:ai_app/widgets/user_map.dart';
-// import 'package:ai_app/widgets/all_problem.dart';
-// import 'package:ai_app/widgets/user_problem.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-// import 'package:geolocator/geolocator.dart';
-// import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:seats_availability_in_university/pages/all_institute.dart';
-import 'package:seats_availability_in_university/pages/messaging.dart';
 import 'package:seats_availability_in_university/pages/priority.dart';
 import 'package:seats_availability_in_university/pages/profile.dart';
 import 'package:seats_availability_in_university/widgets/filter_drawer.dart';
 
-import '../main.dart';
 import '../models/institute.dart';
 import '../utils/globals.dart';
-import '../widgets/merit.dart';
 import '../widgets/signout_drawer.dart';
 import 'front_page.dart';
+import 'message_page.dart';
 
 // import 'package:timezone/timezone.dart' as tz;
 // late Future<Rounds> rounds;
@@ -97,7 +87,7 @@ List<Institute> branchesInstitutes = [
 ];
 
 class Home extends StatefulWidget {
-  Home({super.key});
+  const Home({super.key});
 
   @override
   State<Home> createState() => _HomeState();
@@ -156,7 +146,7 @@ class _HomeState extends State<Home> {
                     userData = userDataFun,
                     // }),
                     print("institute exist!!!"),
-                    print("institute ${userDataFun} exist!!!"),
+                    print("institute $userDataFun exist!!!"),
                   }
               }
             else
@@ -175,11 +165,8 @@ class _HomeState extends State<Home> {
                         // setState(() {
                         userData = userDataFun;
                         // });
-                        print("students exist!!!");
-                        print("students ${userDataFun} exist!!!");
                       }
                     } else {
-                      print("no exist!!!");
                       //no student and institute data
                     }
                   },
@@ -187,9 +174,9 @@ class _HomeState extends State<Home> {
               }
           },
         );
-    // setState(() {
-    userData = userDataFun;
-    // });
+    setState(() {
+      userData = userDataFun;
+    });
     // return userDataFun;
     // final data =
     //     await FirebaseFirestore.instance.collection('institutes').doc().get().then((value) => {
@@ -293,8 +280,8 @@ class _HomeState extends State<Home> {
             // FavInstitute(
             //   refreshInstitute: refreshInstitute,
             // ),
-            Message_Page(),
-            Profile(),
+            const MessagePage(),
+            const Profile(),
             // MapMun(
             //     cameraTarget: cameraTarget,
             //     dekhBinod: () => {
@@ -302,12 +289,12 @@ class _HomeState extends State<Home> {
             //         }),
           ]
         : <Widget>[
-            Message_Page(),
+            const MessagePage(),
 
             // FavInstitute(
             //   refreshInstitute: refreshInstitute,
             // ),
-            Profile(),
+            const Profile(),
           ];
     return Scaffold(
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
@@ -317,13 +304,13 @@ class _HomeState extends State<Home> {
       // ---> below we provide filter
       //
 
-      endDrawer: FilterDrawer(),
+      endDrawer: const FilterDrawer(),
 
       //
       // ---> below we provide Signout logic
       //
 
-      drawer: SignoutDrawer(),
+      drawer: const SignoutDrawer(),
 
       //
       // ---> below we provide priorities logic
@@ -333,7 +320,7 @@ class _HomeState extends State<Home> {
           ? rounds.roundOpen(Timestamp.now()) ||
                   rounds.mockRoundOpen(Timestamp.now())
               ? Container(
-                  margin: EdgeInsets.symmetric(horizontal: 100),
+                  margin: const EdgeInsets.symmetric(horizontal: 100),
                   child: FloatingActionButton.extended(
                     onPressed: () async {
                       // NotificationApi.initState();
@@ -473,29 +460,29 @@ class _HomeState extends State<Home> {
           // activeColor: Theme.of(context).primaryColor,
           tabBackgroundColor: Theme.of(context).focusColor,
           onTabChange: _onItemTapped,
-          padding: EdgeInsets.all(10),
+          padding: const EdgeInsets.all(10),
           tabs: userData['user'] == "student"
               ? [
-                  GButton(
+                  const GButton(
                     // icon: CupertinoIcons.home,
                     icon: Icons.home_filled,
                     text: 'Home',
                   ),
-                  GButton(
+                  const GButton(
                     icon: Icons.info,
                     text: 'Information',
                   ),
-                  GButton(
+                  const GButton(
                     icon: Icons.account_circle,
                     text: 'Account',
                   ),
                 ]
               : [
-                  GButton(
+                  const GButton(
                     icon: Icons.info,
                     text: 'Information',
                   ),
-                  GButton(
+                  const GButton(
                     icon: Icons.account_circle,
                     text: 'Account',
                   ),

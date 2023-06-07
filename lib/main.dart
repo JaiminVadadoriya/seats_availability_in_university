@@ -8,7 +8,6 @@ import 'package:seats_availability_in_university/utils/google_sign_in_provider.d
 import 'package:seats_availability_in_university/utils/routes.dart';
 import 'package:seats_availability_in_university/utils/themes.dart';
 
-import 'models/rounds.dart';
 import 'pages/loginpages/register.dart';
 import 'pages/loginpages/sign.dart';
 
@@ -17,10 +16,12 @@ Future<void> main() async {
   await Firebase.initializeApp();
 
   // debugRepaintRainbowEnabled = true;
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return
@@ -47,7 +48,6 @@ class MyApp extends StatelessWidget {
           MyRoutes.homeRoute: (context) => Home(),
           MyRoutes.signRoute: (context) => Signup(),
           MyRoutes.loginRoute: (context) => Login(),
-          MyRoutes.homeRoute: (context) => Home(),
           MyRoutes.registerRoute: (context) => const Register(),
           // MyRoutes.compRoute: (context) => const ComForm(),
           // MyRoutes.statRoute: (context) => AllProblem(),

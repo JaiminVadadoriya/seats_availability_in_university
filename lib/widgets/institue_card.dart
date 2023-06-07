@@ -1,11 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:seats_availability_in_university/models/institute.dart';
 
-import '../main.dart';
 import '../models/student.dart';
 import '../pages/details_page.dart';
 import '../pages/front_page.dart';
@@ -32,12 +30,16 @@ class _InstituteCardState extends State<InstituteCard> {
       if (docSnapshot.exists) {
         final data = docSnapshot.data();
         if (data != null) {
-          print("pressed -  ${selectionIs}");
+          if (kDebugMode) {
+            print("pressed -  $selectionIs");
+          }
           student = Student.fromMap(data);
           setState(() {
             selectionIs = student.fav.contains(
                 "${widget.institute.uid}/branch/${widget.institute.branches[widget.i].bID}");
-            print("pressed -  ${selectionIs}");
+            if (kDebugMode) {
+              print("pressed -  $selectionIs");
+            }
           });
           userData = data;
         }
@@ -49,7 +51,6 @@ class _InstituteCardState extends State<InstituteCard> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     refreshUserInfo();
     student = Student.fromMap(userData);
@@ -73,15 +74,12 @@ class _InstituteCardState extends State<InstituteCard> {
   //   studentDocs.docs.map((doc) => Student.fromMap(doc.data())).toList();
   @override
   Widget build(BuildContext context) {
-    int leftSeats = widget.institute.branches[widget.i].totalSeats -
-        widget.institute.branches[widget.i].filledSeats;
     int totalStu = students.meritNo;
 
     // (titul sea * fillseat)100//20
 
     int minMerit = widget.institute.branches[widget.i].minMarks; //3
-    double percentage =
-        (students.meritNo * 100) / minMerit; //2*100 = 200/3 = 33.
+//2*100 = 200/3 = 33.
     double result = calculatePossibility(
         widget.institute.branches[widget.i].totalSeats, minMerit, totalStu);
     return Card(
@@ -91,7 +89,7 @@ class _InstituteCardState extends State<InstituteCard> {
             Flexible(
               child: Text(
                 "${widget.institute.name} - ${widget.institute.branches[widget.i].branchName})",
-                style: TextStyle(
+                style: const TextStyle(
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
@@ -103,7 +101,7 @@ class _InstituteCardState extends State<InstituteCard> {
           children: [
             Text(
                 "${widget.institute.branches[widget.i].totalSeats - widget.institute.branches[widget.i].filledSeats} Seats are available"),
-            Text("You have ${result} chances."),
+            Text("You have $result chances."),
             Text("${widget.institute.address} "),
           ],
         ),

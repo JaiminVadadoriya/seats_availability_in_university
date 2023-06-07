@@ -2,18 +2,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
-import 'package:provider/provider.dart';
-import 'package:seats_availability_in_university/main.dart';
-import 'package:seats_availability_in_university/pages/home.dart';
-import 'package:seats_availability_in_university/utils/google_sign_in_provider.dart';
 
 import '../../utils/routes.dart';
-import '../../widgets/merit.dart';
 import '../front_page.dart';
 
 class Login extends StatefulWidget {
   static const String _title = 'Login';
+
+  const Login({super.key});
 
   @override
   State<Login> createState() => _LoginState();
@@ -70,7 +66,7 @@ class _LoginState extends State<Login> {
                 //   height: 20,
                 // ),
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
@@ -81,14 +77,14 @@ class _LoginState extends State<Login> {
                     }
                     return null;
                   },
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: "",
                     labelText: "E-mail",
                   ),
                   keyboardType: TextInputType.emailAddress,
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 TextFormField(
@@ -123,7 +119,7 @@ class _LoginState extends State<Login> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
 
@@ -139,7 +135,7 @@ class _LoginState extends State<Login> {
                           showDialog(
                             context: context,
                             builder: (context) {
-                              return Center(
+                              return const Center(
                                 child: CircularProgressIndicator(),
                               );
                             },

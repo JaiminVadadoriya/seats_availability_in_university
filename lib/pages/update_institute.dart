@@ -1,7 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:seats_availability_in_university/pages/home.dart';
 
 import '../models/institute.dart';
@@ -27,7 +25,7 @@ class UpdateInstitute extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("update"),
+        title: const Text("update"),
       ),
       body: Form(
         key: _formKey,
@@ -38,11 +36,11 @@ class UpdateInstitute extends StatelessWidget {
           ),
           child: Column(
             children: [
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
-              SelectBranch(),
-              SizedBox(
+              const SelectBranch(),
+              const SizedBox(
                 height: 20,
               ),
               TextFormField(
@@ -55,14 +53,14 @@ class UpdateInstitute extends StatelessWidget {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: "Eg - 120",
                   labelText: "Institute Branch Seats",
                   border: OutlineInputBorder(),
                 ),
                 keyboardType: TextInputType.number,
               ),
-              SizedBox(
+              const SizedBox(
                 height: 20,
               ),
               ElevatedButton(
@@ -91,14 +89,6 @@ class UpdateInstitute extends StatelessWidget {
                             branchName: SelectBranch.dropdownvalue,
                           ).toMap())
                           .then((value) {
-                        final branchRef = db
-                            .collection("institutes")
-                            .doc(userId)
-                            .collection("branch")
-                            .doc(value.id)
-                            .update(
-                          {"bID": value.id},
-                        );
                         value.id;
                       });
                       refreshOwnBranches;
@@ -156,7 +146,7 @@ class UpdateInstitute extends StatelessWidget {
                     // );
                   }
                 },
-                child: Text("Submit"),
+                child: const Text("Submit"),
               ),
             ],
           ),
