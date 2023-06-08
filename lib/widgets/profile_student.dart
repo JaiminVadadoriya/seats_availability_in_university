@@ -286,7 +286,8 @@ class _ProfileStudentState extends State<ProfileStudent> {
                       //     : Container(),
                       rounds.roundEnds(Timestamp.now()) &&
                               userData["confinstitute"].toString().isNotEmpty &&
-                              userData["confbranch"].toString().isNotEmpty
+                              userData["confbranch"].toString().isNotEmpty &&
+                              !userData['isSeatConf']
                           ? Column(
                               children: [
                                 Text(
@@ -301,9 +302,6 @@ class _ProfileStudentState extends State<ProfileStudent> {
                                   children: [
                                     ElevatedButton(
                                       onPressed: () async {
-                                        // Future<bool> conform = conformSeat();
-                                        //  bool checkConf=await conform as bool;
-                                        //  print(checkConf);
                                         db
                                             .collection("institutes")
                                             .doc(userData["confinstitute"])
@@ -329,14 +327,23 @@ class _ProfileStudentState extends State<ProfileStudent> {
                                                 .update({
                                               'isSeatConf': true,
                                             });
+                                            setState(() {
+                                              userData['isSeatConf'] = true;
+                                            });
                                           });
                                         });
 
                                         //if(!checkConf){
-
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          SnackBar(
+                                            content: Text(
+                                              "You have successfully confirmed your institute branch $confromBranch",
+                                            ),
+                                          ),
+                                        );
                                         //    print("ho raha he");
-                                        Text(
-                                            "You have successfully confirmed your institute branch ${userData["confbranch"].toString()}");
+
                                         // }
                                       },
                                       child: const Text("conform"),
@@ -346,6 +353,17 @@ class _ProfileStudentState extends State<ProfileStudent> {
                                     ),
                                     ElevatedButton(
                                       onPressed: () async {
+                                        db
+                                            .collection("students")
+                                            .doc(userData["uid"])
+                                            .update({
+                                          'confinstitute': "",
+                                          'confbranch': "",
+                                        });
+                                        setState(() {
+                                          userData["confbranch"] = "";
+                                          userData["confinstitute"] = "";
+                                        });
                                         //Future<bool> conform= conformInstitute();
                                         //   if(await conform){
                                         //   final db = FirebaseFirestore.instance;
@@ -362,9 +380,15 @@ class _ProfileStudentState extends State<ProfileStudent> {
                                         //   'confinstitute': "",
                                         //   'confbranch': "",
                                         // });
-                                        const Text(
-                                          "You have cancel your confirmed  institute ",
+                                        ScaffoldMessenger.of(context)
+                                            .showSnackBar(
+                                          const SnackBar(
+                                            content: Text(
+                                              "You have cancel your confirmed  institute ",
+                                            ),
+                                          ),
                                         );
+
                                         // }
                                       },
                                       child: const Text("cancel"),

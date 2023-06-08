@@ -89,7 +89,14 @@ class UpdateInstitute extends StatelessWidget {
                             branchName: SelectBranch.dropdownvalue,
                           ).toMap())
                           .then((value) {
-                        value.id;
+                        db
+                            .collection("institutes")
+                            .doc(userId)
+                            .collection("branch")
+                            .doc(value.id)
+                            .update(
+                          {"bID": value.id},
+                        );
                       });
                       refreshOwnBranches;
                       Navigator.pop(context);

@@ -30,24 +30,25 @@ class _MessagePageState extends State<MessagePage> {
               .orderBy('timestamp', descending: true)
               .snapshots(),
           builder: (context, snapshot) {
-            if (!snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
                 child: CircularProgressIndicator(),
               );
             }
-            if (!snapshot.hasData) {
+            if (snapshot.connectionState == ConnectionState.none) {
               return const Center(
                 child: Text('No messages available'),
               );
             }
+            // if (snapshot.connectionState == ConnectionState.done) {
+            //   return const Center(
+            //     child: Text('No messages available'),
+            //   );
+            // }
 
             final messages = snapshot.data!.docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
-              final msgInfo = data['msgInfo'];
-              final sender = data['sender'];
-              final time = data['timestamp'];
-
-              return Message(msgInfo: msgInfo, sender: sender, timestamp: time);
+              return Message.fromMap(data);
             }).toList();
 
             return ListView.builder(

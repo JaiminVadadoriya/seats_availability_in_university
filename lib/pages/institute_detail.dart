@@ -211,24 +211,21 @@ class InstituteDetail extends StatelessWidget {
                       site: siteController.text,
                       phone: phoneController.text,
                     );
-                    if (kDebugMode) {
-                      print("branch - ${branchInstitute}");
-                    }
                     db
                         .collection("institutes")
                         .add(
                           branchInstitute.toFirestore(),
                         )
-                        .then((value) {
+                        .then((val) {
                       if (kDebugMode) {
-                        print(value.id);
+                        print(val.id);
                       }
-                      db.collection("institutes").doc(value.id).update(
-                        {"uid": value.id},
+                      db.collection("institutes").doc(val.id).update(
+                        {"uid": val.id},
                       );
                       db
                           .collection("institutes")
-                          .doc(value.id)
+                          .doc(val.id)
                           .collection("branch")
                           .add(Branch(
                             bID: "",
@@ -237,8 +234,15 @@ class InstituteDetail extends StatelessWidget {
                             filledSeats: 0,
                             branchName: SelectBranch.dropdownvalue,
                           ).toMap())
-                          .then((val) {
-                        value.id;
+                          .then((value) {
+                        db
+                            .collection("institutes")
+                            .doc(val.id)
+                            .collection("branch")
+                            .doc(value.id)
+                            .update(
+                          {"bID": value.id},
+                        );
                       });
                     });
                     //move to new page

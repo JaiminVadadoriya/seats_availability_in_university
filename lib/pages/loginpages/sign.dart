@@ -188,6 +188,11 @@ class _SignupState extends State<Signup> {
                               );
                             },
                           );
+                          final credential = await FirebaseAuth.instance
+                              .createUserWithEmailAndPassword(
+                            email: Signup.mailController.text,
+                            password: Signup.passwordController.text,
+                          );
                           Navigator.of(context).pop();
 
                           Navigator.pushNamed(context, MyRoutes.registerRoute);

@@ -55,7 +55,7 @@ class _InstituteCardState extends State<InstituteCard> {
     refreshUserInfo();
     student = Student.fromMap(userData);
     selectionIs = student.fav.contains(
-        "${widget.institute.uid}/branch/${widget.institute.branches[widget.i].bID}");
+        '${widget.institute.uid}/branch/${widget.institute.branches[widget.i].bID}');
   }
 
   double calculatePossibility(
@@ -126,6 +126,8 @@ class _InstituteCardState extends State<InstituteCard> {
                     color: selectionIs ? Colors.red : Colors.green,
                   ),
                   onPressed: () {
+                    print(
+                        "muje sona ${widget.institute.uid}/branch/${widget.institute.branches[widget.i].bID}");
                     setState(() {
                       selectionIs = !selectionIs;
                     });
@@ -150,6 +152,7 @@ class _InstituteCardState extends State<InstituteCard> {
                       // _student.fav
                       //     .remove(widget.institute.branches[widget.i].bID);
                     }
+
                     // refreshUserInfo();
                     // print(
                     //     "prssed- ${_student.fav.contains(widget.institute.branches[widget.i].bID)}");
