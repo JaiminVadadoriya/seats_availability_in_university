@@ -239,7 +239,8 @@ class _AllInstituteState extends State<AllInstitute>
                           borderSide: BorderSide.none,
                           borderRadius: BorderRadius.horizontal(
                             left: Radius.circular(30.0),
-                            right: Radius.circular(4.0),
+                            right: Radius.circular(30.0),
+                            // right: Radius.circular(4.0),
                           ),
                         ),
                         hintText: "eg: Goverment Polytechnic",
@@ -260,71 +261,71 @@ class _AllInstituteState extends State<AllInstitute>
                   width: 3.5,
                 ),
                 // providing filter page
-                Tooltip(
-                  message: "Filters",
-                  child: SizedBox(
-                    height: 60,
-                    // width: 40,s
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Lets open drawer using global key
-                        Globals.scaffoldKey.currentState?.openEndDrawer();
-                      },
-                      style: ButtonStyle(
-                        shape: MaterialStateProperty.resolveWith(
-                          (states) {
-                            // If the button is pressed, return green, otherwise blue
-                            if (states.contains(MaterialState.pressed)) {
-                              return const RoundedRectangleBorder(
-                                // side: BorderSide(),
-                                borderRadius: BorderRadiusDirectional.all(
-                                    Radius.circular(8.0)),
-                              );
-                            }
-                            return const RoundedRectangleBorder(
-                              // side: BorderSide(),
-                              borderRadius: BorderRadiusDirectional.horizontal(
-                                start: Radius.circular(
-                                  4.0,
-                                ),
-                                end: Radius.circular(
-                                  30.0,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        // elevation: MaterialStateProperty.resolveWith((states) {
-                        //   return null;
-                        // }),
-                        // backgroundColor: MaterialStateProperty.resolveWith(
-                        //   (states) {
-                        //     // If the button is pressed, return green, otherwise blue
-                        //     if (states.contains(MaterialState.pressed)) {
-                        //       return Theme.of(context).indicatorColor;
-                        //     }
-                        //     return Theme.of(context).focusColor;
-                        //   },
-                        // ),
-                      ),
-                      child:
-                          // Row(
-                          //   children: [
-                          const Icon(
-                        CupertinoIcons.slider_horizontal_3,
-                        // color: ThemeData().secondaryHeaderColor,
-                      ),
-                      // Text(
-                      //   "Filters",
-                      //   style: TextStyle(
-                      //     color: Colors.grey,
-                      //   ),
-                      // ),
-                      // ],
-                      // )
-                    ),
-                  ),
-                )
+                // Tooltip(
+                //   message: "Filters",
+                //   child: SizedBox(
+                //     height: 60,
+                //     // width: 40,s
+                //     child: ElevatedButton(
+                //       onPressed: () {
+                //         // Lets open drawer using global key
+                //         Globals.scaffoldKey.currentState?.openEndDrawer();
+                //       },
+                //       style: ButtonStyle(
+                //         shape: MaterialStateProperty.resolveWith(
+                //           (states) {
+                //             // If the button is pressed, return green, otherwise blue
+                //             if (states.contains(MaterialState.pressed)) {
+                //               return const RoundedRectangleBorder(
+                //                 // side: BorderSide(),
+                //                 borderRadius: BorderRadiusDirectional.all(
+                //                     Radius.circular(8.0)),
+                //               );
+                //             }
+                //             return const RoundedRectangleBorder(
+                //               // side: BorderSide(),
+                //               borderRadius: BorderRadiusDirectional.horizontal(
+                //                 start: Radius.circular(
+                //                   4.0,
+                //                 ),
+                //                 end: Radius.circular(
+                //                   30.0,
+                //                 ),
+                //               ),
+                //             );
+                //           },
+                //         ),
+                //         // elevation: MaterialStateProperty.resolveWith((states) {
+                //         //   return null;
+                //         // }),
+                //         // backgroundColor: MaterialStateProperty.resolveWith(
+                //         //   (states) {
+                //         //     // If the button is pressed, return green, otherwise blue
+                //         //     if (states.contains(MaterialState.pressed)) {
+                //         //       return Theme.of(context).indicatorColor;
+                //         //     }
+                //         //     return Theme.of(context).focusColor;
+                //         //   },
+                //         // ),
+                //       ),
+                //       child:
+                //           // Row(
+                //           //   children: [
+                //           const Icon(
+                //         CupertinoIcons.slider_horizontal_3,
+                //         // color: ThemeData().secondaryHeaderColor,
+                //       ),
+                //       // Text(
+                //       //   "Filters",
+                //       //   style: TextStyle(
+                //       //     color: Colors.grey,
+                //       //   ),
+                //       // ),
+                //       // ],
+                //       // )
+                //     ),
+                //   ),
+                // )
               ],
             ),
           ),
