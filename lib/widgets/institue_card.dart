@@ -114,7 +114,7 @@ class _InstituteCardState extends State<InstituteCard> {
                     )),
           );
         },
-        trailing: rounds.roundOpen(Timestamp.now())
+        trailing: rounds.roundOpen(Timestamp.now()) && !userData['isSeatConf']
             ? AnimatedRotation(
                 turns: selectionIs ? 0.375 : 1,
                 duration: const Duration(milliseconds: 750),

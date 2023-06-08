@@ -103,7 +103,7 @@ class _ProfileStudentState extends State<ProfileStudent> {
                   style: TextStyle(fontSize: 20),
                 )
               : Text(
-                  "${userData["meritNo"]}",
+                  "Merit - ${userData["meritNo"]}",
                   style: const TextStyle(fontSize: 23),
                 ),
           const SizedBox(
@@ -396,6 +396,14 @@ class _ProfileStudentState extends State<ProfileStudent> {
                                   ],
                                 ),
                               ],
+                            )
+                          : Container(),
+                      rounds.roundEnds(Timestamp.now()) &&
+                              userData["confinstitute"].toString().isNotEmpty &&
+                              userData["confbranch"].toString().isNotEmpty &&
+                              userData['isSeatConf']
+                          ? Text(
+                              'You have successfully confirmed your institute branch "$confromBranch", submit your documents in "$confromInstitute" as soon as possible',
                             )
                           : Container(),
                     ],

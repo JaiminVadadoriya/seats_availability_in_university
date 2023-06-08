@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/src/widgets/framework.dart';
+import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:seats_availability_in_university/models/student.dart';
 
 import '../models/institute.dart';
@@ -9,7 +11,7 @@ import 'front_page.dart';
 import 'home.dart';
 
 class Priority extends StatefulWidget {
-  const Priority({super.key});
+  Priority({super.key});
 
   @override
   State<Priority> createState() => _PriorityState();
@@ -75,6 +77,7 @@ class _PriorityState extends State<Priority> {
 
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
     refreshInstitute();
   }
@@ -83,7 +86,7 @@ class _PriorityState extends State<Priority> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Priority"),
+        title: Text("Priority"),
       ),
       body: RefreshIndicator(
         onRefresh: refreshInstitute,
@@ -98,7 +101,7 @@ class _PriorityState extends State<Priority> {
                     Flexible(
                       child: Text(
                         "${branchesInstitutes[index].name} - ${branchesInstitutes[index].branchName})",
-                        style: const TextStyle(
+                        style: TextStyle(
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
